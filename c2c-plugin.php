@@ -2,40 +2,39 @@
 /**
  * @package C2C_Plugins
  * @author Scott Reilly
- * @version 029
+ * @version 037
  */
 /*
 Basis for other plugins
 
-Compatible with WordPress 3.1+, 3.2+, 3.3+.
-
-=>> Read the accompanying readme.txt file for more information.  Also, visit the plugin's homepage
-=>> for more information and the latest updates
-
-Installation:
+Compatible with WordPress 3.6+ through 3.8+.
 
 */
 
 /*
-Copyright (c) 2010-2011 by Scott Reilly (aka coffee2code)
+	Copyright (c) 2010-2014 by Scott Reilly (aka coffee2code)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
-modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
-IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-if ( ! class_exists( 'C2C_Plugin_029' ) ) :
+defined( 'ABSPATH' ) or die();
 
-abstract class C2C_Plugin_029 {
-	protected $plugin_css_version = '008';
+if ( ! class_exists( 'C2C_Plugin_037' ) ) :
+
+abstract class C2C_Plugin_037 {
+	protected $plugin_css_version = '009';
 	protected $options            = array();
 	protected $options_from_db    = '';
 	protected $option_names       = array();
@@ -70,8 +69,7 @@ abstract class C2C_Plugin_029 {
 	 * @param array $plugin_options (optional) Array specifying further customization of plugin configuration.
 	 * @return void
 	 */
-	public function __construct( $version, $id_base, $author_prefix, $file, $plugin_options = array() ) {
-		global $pagenow;
+	protected function __construct( $version, $id_base, $author_prefix, $file, $plugin_options = array() ) {
 		$id_base = sanitize_title( $id_base );
 		if ( ! file_exists( $file ) )
 			die( sprintf( __( 'Invalid file specified for C2C_Plugin: %s', $this->textdomain ), $file ) );
@@ -109,15 +107,37 @@ abstract class C2C_Plugin_029 {
 
 		$plugin_file = implode( '/', array_slice( explode( '/', $this->plugin_basename ), -2 ) );
 
-		add_action( 'init',                         array( &$this, 'init' ) );
-		add_action( 'activate_' . $plugin_file,     array( &$this, 'install' ) );
-		add_action( 'deactivate_' . $plugin_file,   array( &$this, 'deactivate' ) );
-
+		add_action( 'init',                         array( $this, 'init' ) );
+		add_action( 'activate_' . $plugin_file,     array( $this, 'install' ) );
+		add_action( 'deactivate_' . $plugin_file,   array( $this, 'deactivate' ) );
 		if ( $this->is_plugin_admin_page() || $this->is_submitting_form() ) {
-			add_action( 'admin_init', array( &$this, 'init_options' ) );
+			add_action( 'admin_init', array( $this, 'init_options' ) );
 			if ( ! $this->is_submitting_form() )
-				add_action( 'admin_head', array( &$this, 'add_c2c_admin_css' ) );
+				add_action( 'admin_head', array( $this, 'add_c2c_admin_css' ) );
 		}
+	}
+
+	/**
+	 * A dummy magic method to prevent object from being cloned
+	 *
+	 * @since 036
+	 */
+	public function __clone() { _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->textdomain ), '036' ); }
+
+	/**
+	 * A dummy magic method to prevent object from being unserialized
+	 *
+	 * @since 036
+	 */
+	public function __wakeup() { _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->textdomain ), '036' ); }
+
+	/**
+	 * Returns the plugin's version.
+	 *
+	 * @since 031
+	 */
+	public function version() {
+		return $this->version;
 	}
 
 	/**
@@ -155,15 +175,16 @@ abstract class C2C_Plugin_029 {
 		$this->load_config();
 		$this->verify_config();
 
-		add_filter( 'plugin_row_meta', array( &$this, 'donate_link' ), 10, 2);
+		add_filter( 'plugin_row_meta', array( $this, 'donate_link' ), 10, 2);
 
 		if ( $this->disable_update_check )
-			add_filter( 'http_request_args', array( &$this, 'disable_update_check' ), 5, 2 );
+			add_filter( 'http_request_args', array( $this, 'disable_update_check' ), 5, 2 );
 
 		if ( $this->show_admin && $this->settings_page && ! empty( $this->config ) && current_user_can( 'manage_options' ) ) {
-			add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 			if ( ! $this->disable_contextual_help ) {
-				add_filter( 'contextual_help', array( &$this, 'contextual_help' ), 10, 3 );
+				if ( version_compare( $GLOBALS['wp_version'], '3.3', '<' ) )
+					add_filter( 'contextual_help', array( $this, 'contextual_help' ), 10, 3 );
 				if ( $this->is_plugin_admin_page() )
 					add_thickbox();
 			}
@@ -193,9 +214,8 @@ abstract class C2C_Plugin_029 {
 			update_option( 'bkup_' . $this->admin_options_name, $this->options );
 
 			$this->options['_version'] = $this->version;
-			$options = $this->handle_plugin_upgrade( $_version, $this->options );
-			update_option( $this->admin_options_name, $options );
-			$this->options = $options;
+			$this->options = $this->handle_plugin_upgrade( $_version, $this->options );
+			update_option( $this->admin_options_name, $this->options );
 		}
 	}
 
@@ -238,8 +258,8 @@ abstract class C2C_Plugin_029 {
 		if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) )
 			return $r; // Not a plugin update request. Bail immediately.
 		$plugins = unserialize( $r['body']['plugins'] );
-		unset( $plugins->plugins[ plugin_basename( __FILE__ ) ] );
-		unset( $plugins->active[ array_search( plugin_basename( __FILE__ ), $plugins->active ) ] );
+		unset( $plugins->plugins[ $this->plugin_basename ] );
+		unset( $plugins->active[ array_search( $this->plugin_basename, $plugins->active ) ] );
 		$r['body']['plugins'] = serialize( $plugins );
 		return $r;
 	}
@@ -250,11 +270,11 @@ abstract class C2C_Plugin_029 {
 	 * @return void
 	 */
 	public function init_options() {
-		register_setting( $this->admin_options_name, $this->admin_options_name, array( &$this, 'sanitize_inputs' ) );
-		add_settings_section( 'default', '', array( &$this, 'options_page_description' ), $this->plugin_file );
-		add_filter( 'whitelist_options', array( &$this, 'whitelist_options' ) );
+		register_setting( $this->admin_options_name, $this->admin_options_name, array( $this, 'sanitize_inputs' ) );
+		add_settings_section( 'default', '', array( $this, 'options_page_description' ), $this->plugin_file );
+		add_filter( 'whitelist_options', array( $this, 'whitelist_options' ) );
 		foreach ( $this->get_option_names( false ) as $opt )
-			add_settings_field( $opt, $this->get_option_label( $opt ), array( &$this, 'display_option' ), $this->plugin_file, 'default', $opt );
+			add_settings_field( $opt, $this->get_option_label( $opt ), array( $this, 'display_option' ), $this->plugin_file, 'default', $opt );
 	}
 
 	/**
@@ -277,7 +297,10 @@ abstract class C2C_Plugin_029 {
 	 * @param string $localized_heading_text (optional) Localized page heading text.
 	 * @return void
 	 */
-	protected function options_page_description( $localized_heading_text = '' ) {
+	public function options_page_description( $localized_heading_text = '' ) {
+		if ( ! is_string( $localized_heading_text ) )
+			$localized_heading_text = '';
+
 		if ( empty( $localized_heading_text ) )
 			$localized_heading_text = $this->name;
 		if ( $localized_heading_text )
@@ -305,8 +328,8 @@ abstract class C2C_Plugin_029 {
 	 * @return array
 	 */
 	public function reset_options() {
-		$options = $this->get_options( false );
-		return $options;
+		$this->options = $this->get_options( false );
+		return $this->options;
 	}
 
 	/**
@@ -452,9 +475,10 @@ abstract class C2C_Plugin_029 {
 		if ( $screen_id != $this->options_page )
 			return $contextual_help;
 
-		$help_url = admin_url( "plugin-install.php?tab=plugin-information&amp;plugin={$this->id_base}&amp;TB_iframe=true&amp;width=640&amp;height=656" );
+		$help_url = admin_url( "plugin-install.php?tab=plugin-information&amp;plugin={$this->id_base}&amp;TB_iframe=true&amp;width=640&amp;height=514" );
 
-		$help = '<p class="more-help">';
+		$help = '<h3>More Plugin Help</h3>';
+		$help .= '<p class="more-help">';
 		$help .= '<a title="' . esc_attr( sprintf( __( 'More information about %1$s %2$s', $this->textdomain ), $this->name, $this->version ) ) .
 			'" class="thickbox" href="' . $help_url . '">' . __( 'Click for more help on this plugin', $this->textdomain ) . '</a>' .
 			__( ' (especially check out the "Other Notes" tab, if present)', $this->textdomain );
@@ -469,7 +493,6 @@ abstract class C2C_Plugin_029 {
 	 */
 	public function add_c2c_admin_css() {
 		global $c2c_plugin_max_css_version, $c2c_plugin_css_was_output;
-
 		if ( ( $c2c_plugin_max_css_version != $this->plugin_css_version ) || ( isset( $c2c_plugin_css_was_output ) && $c2c_plugin_css_was_output ) )
 			return;
 
@@ -478,9 +501,9 @@ abstract class C2C_Plugin_029 {
 		/**
 		 * Remember to increment the plugin_css_version variable if changing the CSS
 		 */
-		echo <<<CSS
+		echo <<<HTML
 		<style type="text/css">
-		.long-text {width:95% !important;}
+		.long-text {width:98% !important;}
 		#c2c {
 			text-align:center;
 			color:#888;
@@ -510,12 +533,12 @@ abstract class C2C_Plugin_029 {
 		.c2c-form .hr, .c2c-hr {border-bottom:1px solid #ccc;padding:0 2px;margin-bottom:6px;}
 		.c2c-input-help {color:#777;font-size:x-small;}
 		.c2c-fieldset {border:1px solid #ccc; padding:2px 8px;}
-		.c2c-textarea, .c2c-inline_textarea {width:95%;font-family:"Courier New", Courier, mono;}
+		.c2c-textarea, .c2c-inline_textarea {width:98%;font-family:"Courier New", Courier, mono;}
 		.see-help {font-size:x-small;font-style:italic;}
 		.more-help {display:block;margin-top:8px;}
 		</style>
 
-CSS;
+HTML;
 	}
 
 	/**
@@ -524,7 +547,7 @@ CSS;
 	 * @return void
 	 */
 	public function admin_menu() {
-		add_filter( 'plugin_action_links_' . $this->plugin_basename, array( &$this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . $this->plugin_basename, array( $this, 'plugin_action_links' ) );
 		switch ( $this->settings_page ) {
 			case 'options-general' :
 				$func_root = 'options';
@@ -536,8 +559,45 @@ CSS;
 				$func_root = $this->settings_page;
 		}
 		$menu_func = 'add_' . $func_root . '_page';
-		if ( function_exists( $menu_func ) )
-			$this->options_page = call_user_func( $menu_func, $this->name, $this->menu_name, 'manage_options', $this->plugin_basename, array( &$this, 'options_page' ) );
+		if ( function_exists( $menu_func ) ) {
+			$this->options_page = call_user_func( $menu_func, $this->name, $this->menu_name, 'manage_options', $this->plugin_basename, array( $this, 'options_page' ) );
+			add_action( 'load-' . $this->options_page, array( $this, 'help_tabs' ) );
+		}
+	}
+
+	/**
+	 * Initialize help tabs.
+	 *
+	 * @since 034
+	 * @return void
+	 */
+	public function help_tabs() {
+		if ( ! class_exists( 'WP_Screen' ) )
+			return;
+
+		$screen = get_current_screen();
+
+		if ( $screen->id != $this->options_page )
+			return;
+
+		$this->help_tabs_content( $screen );
+	}
+
+	/**
+	 * Configures help tabs content.
+	 *
+	 * This should be overridden by inheriting class if it needs help content.
+	 *
+	 * @since 034
+	 *
+	 * @return void
+	 */
+	public function help_tabs_content( $screen ) {
+		$screen->add_help_tab( array(
+			'id'      => 'c2c-more-help-' . $this->id_base,
+			'title'   => __( 'More Help', $this->textdomain ),
+			'content' => self::contextual_help( '', $this->options_page )
+		) );
 	}
 
 	/**
@@ -615,8 +675,8 @@ CSS;
 	 * @param bool $with_current_values (optional) Should the currently saved values be returned? If false, then the plugin's defaults are returned. Default is true.
 	 * @return array The options array for the plugin (which is also stored in $this->options if !$with_options).
 	 */
-	protected function get_options( $with_current_values = true ) {
-		if ( $with_current_values && !empty( $this->options ) )
+	public function get_options( $with_current_values = true ) {
+		if ( $with_current_values && ! empty( $this->options ) )
 			return $this->options;
 		// Derive options from the config
 		$options = array();
@@ -648,6 +708,24 @@ CSS;
 			}
 		}
 		return apply_filters( $this->get_hook( 'options' ), $this->options );
+	}
+
+	/**
+	 * Updates the options with values specifically defined.
+	 *
+	 * @since 037
+	 *
+	 * @param array $settings   The new setting value(s)
+	 * @param bool  $with_reset Should the options be reset, with the new settings overlaid on top of the default settings?
+	 * @return array
+	 */
+	public function update_option( $settings, $with_reset = false ) {
+		if ( $with_reset ) {
+			$this->reset_options();
+		}
+		$settings = $this->sanitize_inputs( $settings );
+		update_option( $this->admin_options_name, $settings );
+		return $this->options = $settings;
 	}
 
 	/**
@@ -684,8 +762,7 @@ CSS;
 	 * @return bool True if on the plugin's settings page, else false.
 	 */
 	protected function is_plugin_admin_page() {
-		global $pagenow;
-		return ( basename( $pagenow, '.php' ) == $this->settings_page && isset( $_REQUEST['page'] ) && $_REQUEST['page'] == $this->plugin_basename );
+		return ( basename( $_SERVER['PHP_SELF'], '.php' ) == $this->settings_page && isset( $_REQUEST['page'] ) && $_REQUEST['page'] == $this->plugin_basename );
 	}
 
 	/**
@@ -790,9 +867,6 @@ CSS;
 	public function options_page() {
 		$options = $this->get_options();
 
-		if ( function_exists( 'settings_errors' ) ) // Check for pre-3.0 compatibility
-			settings_errors();
-
 		if ( $this->saved_settings )
 			echo "<div id='message' class='updated fade'><p><strong>" . $this->saved_settings_msg . '</strong></p></div>';
 
@@ -803,7 +877,7 @@ CSS;
 
 		do_action( $this->get_hook( 'before_settings_form' ), $this );
 
-		echo "<form action='options.php' method='post' class='c2c-form'>\n";
+		echo "<form action='" . admin_url( 'options.php' ) . "' method='post' class='c2c-form'>\n";
 
 		settings_fields( $this->admin_options_name );
 		do_settings_sections( $this->plugin_file );
@@ -833,17 +907,15 @@ CSS;
 	}
 
 	/**
-	 * Returns the URL for the plugin's readme.txt file on wordpress.org/extend/plugins
+	 * Returns the URL for the plugin's readme.txt file on wordpress.org/plugins
 	 *
 	 * @since 005
 	 *
 	 * @return string The URL
 	 */
 	public function readme_url() {
-		return 'http://wordpress.org/extend/plugins/' . $this->id_base . '/tags/' . $this->version . '/readme.txt';
+		return 'http://wordpress.org/plugins/' . $this->id_base . '/tags/' . $this->version . '/readme.txt';
 	}
 } // end class
 
 endif; // end if !class_exists()
-
-?>
