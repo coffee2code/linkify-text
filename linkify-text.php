@@ -1,36 +1,41 @@
 <?php
 /**
+ * Plugin Name: Linkify Text
+ * Version:     1.6
+ * Plugin URI:  http://coffee2code.com/wp-plugins/linkify-text/
+ * Author:      Scott Reilly
+ * Author URI:  http://coffee2code.com/
+ * Text Domain: linkify-text
+ * Domain Path: /lang/
+ * License:     GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Description: Automatically hyperlink words or phrases in your posts.
+ *
+ * Compatible with WordPress 3.6 through 4.1+.
+ *
+ * =>> Read the accompanying readme.txt file for instructions and documentation.
+ * =>> Also, visit the plugin's homepage for additional information and updates.
+ * =>> Or visit: https://wordpress.org/plugins/linkify-text/
+ *
+ * TODO
+ * * Allow links to point to other text entries so a link can be defined once:
+ *      WP => https://wordpress.org
+ *      WordPress => WP
+ *      start blogging => WP
+ * * Add class to link. Maybe add filter as well. (Q was asked about opening link in new window)
+ * * Setting to open links in new window? (Forum request)
+ * * Setting to prevent linkification if link points to current page? (Forum request)
+ * * For multibyte strings to be linkified, honor the replace_once setting.
+ * * Consider adding more options: specific number of replacements, open links in new tab, other
+ * *    common site places to filter
+ *
  * @package Linkify_Text
  * @author Scott Reilly
- * @version 1.5
+ * @version 1.6
  */
-/*
-Plugin Name: Linkify Text
-Version: 1.5
-Plugin URI: http://coffee2code.com/wp-plugins/linkify-text/
-Author: Scott Reilly
-Author URI: http://coffee2code.com/
-Text Domain: linkify-text
-Domain Path: /lang/
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Description: Automatically hyperlink words or phrases in your posts.
-
-Compatible with WordPress 3.6 through 3.8+.
-
-=>> Read the accompanying readme.txt file for instructions and documentation.
-=>> Also, visit the plugin's homepage for additional information and updates.
-=>> Or visit: http://wordpress.org/plugins/linkify-text/
-
-TODO
-	* Allow links to point to other text entries so a link can be defined once:
-	    WP => http://wordpress.org
-	    WordPress => WP
-	    start blogging => WP
-*/
 
 /*
-	Copyright (c) 2011-2014 by Scott Reilly (aka coffee2code)
+	Copyright (c) 2011-2015 by Scott Reilly (aka coffee2code)
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -47,15 +52,16 @@ TODO
 	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+defined( 'ABSPATH' ) or die();
 
 if ( ! class_exists( 'c2c_LinkifyText' ) ) :
 
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 
-class c2c_LinkifyText extends C2C_Plugin_037 {
+class c2c_LinkifyText extends C2C_Plugin_039 {
 
 	/**
-	 * @var c2c_AddAdminCSS The one true instance
+	 * @var c2c_LinkifyText The one true instance
 	 */
 	private static $instance;
 
@@ -65,8 +71,9 @@ class c2c_LinkifyText extends C2C_Plugin_037 {
 	 * @since 1.5
 	 */
 	public static function get_instance() {
-		if ( ! isset( self::$instance ) )
+		if ( ! isset( self::$instance ) ) {
 			self::$instance = new self();
+		}
 
 		return self::$instance;
 	}
@@ -75,7 +82,7 @@ class c2c_LinkifyText extends C2C_Plugin_037 {
 	 * Constructor.
 	 */
 	protected function __construct() {
-		parent::__construct( '1.5', 'linkify-text', 'c2c', __FILE__, array() );
+		parent::__construct( '1.6', 'linkify-text', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;
@@ -83,17 +90,13 @@ class c2c_LinkifyText extends C2C_Plugin_037 {
 
 	/**
 	 * Handles activation tasks, such as registering the uninstall hook.
-	 *
-	 * @return void
 	 */
-	public function activation() {
+	public static function activation() {
 		register_uninstall_hook( __FILE__, array( __CLASS__, 'uninstall' ) );
 	}
 
 	/**
 	 * Handles uninstallation tasks, such as deleting plugin options.
-	 *
-	 * @return void
 	 */
 	public static function uninstall() {
 		delete_option( 'c2c_linkify_text' );
@@ -101,8 +104,6 @@ class c2c_LinkifyText extends C2C_Plugin_037 {
 
 	/**
 	 * Initializes the plugin's configuration and localizable text variables.
-	 *
-	 * @return void
 	 */
 	protected function load_config() {
 		$this->name      = __( 'Linkify Text', $this->textdomain );
@@ -110,24 +111,25 @@ class c2c_LinkifyText extends C2C_Plugin_037 {
 
 		$this->config = array(
 			'text_to_link' => array( 'input' => 'inline_textarea', 'datatype' => 'hash', 'default' => array(
-					"WordPress"   => "http://wordpress.org",
+					"WordPress"   => "https://wordpress.org",
 					"coffee2code" => "http://coffee2code.com"
 				),
 				'allow_html' => true, 'no_wrap' => true, 'input_attributes' => 'rows="15" cols="40"',
 				'label' => __( 'Text and Links', $this->textdomain ),
-				'help' => __( 'Define only one text and associated link per line, and don\'t span lines.', $this->textdomain )
+				'help'  => __( 'Define only one text and associated link per line, and don\'t span lines.', $this->textdomain ),
 			),
 			'linkify_text_comments' => array( 'input' => 'checkbox', 'default' => false,
-					'label' => __( 'Enable text linkification in comments?', $this->textdomain ),
-					'help' => ''
+				'label' => __( 'Enable text linkification in comments?', $this->textdomain ),
+				'help'  => '',
 			),
 			'replace_once' => array( 'input' => 'checkbox', 'default' => false,
 				'label' => __( 'Limit linkifications to once per term per post?', $this->textdomain ),
-				'help' => __( 'If checked, then each term will only be linkified the first time it appears in a post.', $this->textdomain )
+				'help'  => __( 'If checked, then each term will only be linkified the first time it appears in a post.', $this->textdomain ),
 			),
 			'case_sensitive' => array( 'input' => 'checkbox', 'default' => false,
-					'label' => __( 'Case sensitive text matching?', $this->textdomain ),
-					'help' => __( 'If checked, then linkification of WordPress would also affect wordpress.', $this->textdomain )
+				'label' => __( 'Case sensitive text matching?', $this->textdomain ),
+				'help'  => __( 'If checked, then linkification of WordPress would also affect wordpress.', $this->textdomain ) . ' ' .
+						   __( 'NOTE: If the text to be linked contains multibyte characters, this setting is not honored.', $this->textdomain ),
 			)
 		);
 	}
@@ -137,8 +139,9 @@ class c2c_LinkifyText extends C2C_Plugin_037 {
 	 */
 	public function register_filters() {
 		$filters = apply_filters( 'c2c_linkify_text_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
-		foreach ( (array) $filters as $filter )
+		foreach ( (array) $filters as $filter ) {
 			add_filter( $filter, array( $this, 'linkify_text' ), 2 );
+		}
 
 		add_filter( 'get_comment_text',    array( $this, 'linkify_comment_text' ), 11 );
 		add_filter( 'get_comment_excerpt', array( $this, 'linkify_comment_text' ), 11 );
@@ -148,21 +151,20 @@ class c2c_LinkifyText extends C2C_Plugin_037 {
 	 * Outputs the text above the setting form
 	 *
 	 * @param string $localized_heading_text (optional) Localized page heading text.
-	 * @return void (Text will be echoed.)
 	 */
 	public function options_page_description( $localized_heading_text = '' ) {
 		parent::options_page_description( __( 'Linkify Text Settings', $this->textdomain ) );
 
 		echo '<p>' . __( 'Description: Automatically hyperlink words or phrases in your posts.', $this->textdomain ) . '</p>';
 		echo '<p>' . __( 'Define text and the URL they should be linked to in the field below. The format should be like this:', $this->textdomain ) . '</p>';
-		echo "<blockquote><code>WordPress => http://wordpress.org</code></blockquote>";
-		echo '<p>' . __( 'Where <code>WordPress</code> is the text you want to get linked and <code>http://wordpress.org</code> would be what the target for that link.', $this->textdomain ) . '</p>';
+		echo "<blockquote><code>WordPress => https://wordpress.org</code></blockquote>";
+		echo '<p>' . __( 'Where <code>WordPress</code> is the text you want to get linked and <code>https://wordpress.org</code> would be what the target for that link.', $this->textdomain ) . '</p>';
 		echo '<p>' . __( 'You can link multiple terms to the same link and only have to define the link once. Simply provide the link for a given term, then for subsequent terms sharing the same link, use the original term prepended with a colon as the link, e.g.', $this->textdomain ) . '</p>';
-		echo '<blockquote><pre><code>WP => http://wordpress.org
+		echo '<blockquote><pre><code>WP => https://wordpress.org
 WordPress => :WP
 dotorg => :WP
 </code></pre></blockquote>';
-		echo '<p>' . sprintf( __( 'All of the above terms would link to %s.', $this->textdomain ), 'http://wordpress.org' ) . '</p>';
+		echo '<p>' . sprintf( __( 'All of the above terms would link to %s.', $this->textdomain ), 'https://wordpress.org' ) . '</p>';
 		echo '<p>' . __( 'NOTE: A referenced term must have a link; it cannot be a reference to another term.', $this->textdomain ) . '</p>';
 		echo '<p>' . __( 'Other considerations:', $this->textdomain ) . '</p>';
 		echo '<ul class="c2c-plugin-list"><li>';
@@ -205,9 +207,18 @@ dotorg => :WP
 		$case_sensitive  = apply_filters( 'c2c_linkify_text_case_sensitive', $options['case_sensitive'] );
 		$limit           = apply_filters( 'c2c_linkify_text_replace_once',   $options['replace_once'] ) === true ? '1' : '-1';
 		$preg_flags      = $case_sensitive ? 's' : 'si';
+		$mb_regex_encoding = null;
 
 		$text = ' ' . $text . ' ';
+
 		if ( ! empty( $text_to_link ) ) {
+
+			// Store original mb_regex_encoding and then set it to UTF-8.
+			if ( function_exists( 'mb_regex_encoding' ) ) {
+				$mb_regex_encoding = mb_regex_encoding();
+				mb_regex_encoding( 'UTF-8' );
+			}
+
 			foreach ( $text_to_link as $old_text => $link ) {
 
 				// If the link starts with a colon, treat it as a special shortcut to the
@@ -230,10 +241,34 @@ dotorg => :WP
 				$new_text = '<a href="' . esc_url( $link ) . '">' . $old_text . '</a>';
 				$new_text = apply_filters( 'c2c_linkify_text_linked_text', $new_text, $old_text, $link );
 
-				$text = preg_replace( "|(?!<.*?)\b$old_text\b(?![^<>]*?>)|$preg_flags", $new_text, $text, $limit );
+				// If the text to be replaced has multibyte character(s), use
+				// mb_ereg_replace() if possible.
+				if ( function_exists( 'mb_ereg_replace' ) && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
+					// NOTE: mb_ereg_replace() does not support limiting the number of replacements.
+					$text = mb_ereg_replace(
+						"(?![<\[].*?)\b" . preg_quote( $old_text ) . "\b(?![^<>]*?[\]>])",
+						$new_text,
+						$text,
+						$preg_flags
+					);
+				} else {
+					$text = preg_replace(
+						"|(?![<\[].*?)\b" . preg_quote( $old_text ) . "\b(?![^<>]*?[\]>])|{$preg_flags}",
+						$new_text,
+						$text,
+						$limit
+					);
+				}
 			}
+
+			// Restore original mb_regexp_encoding, if changed.
+			if ( $mb_regex_encoding ) {
+				mb_regex_encoding( $mb_regex_encoding );
+			}
+
 			// Remove links within links
 			$text = preg_replace( "#(<a [^>]+>)(.*)<a [^>]+>([^<]*)</a>([^>]*)</a>#iU", "$1$2$3$4</a>" , $text );
+
 		}
 
 		return trim( $text );

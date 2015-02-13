@@ -17,6 +17,8 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		remove_filter( 'c2c_linkify_text_replace_once',   '__return_true' );
 		remove_filter( 'c2c_linkify_text_case_sensitive', '__return_true' );
 		remove_filter( 'c2c_linkify_text_comments',       '__return_true' );
+		remove_filter( 'c2c_linkify_text_filters',        array( $this, 'add_custom_filter' ) );
+		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'add_title_attribute_to_linkified_text' ), 10, 3 );
 	}
 
 
@@ -46,14 +48,15 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	function set_option( $settings = array() ) {
 		$defaults = array(
 			'text_to_link' => array(
-				'coffee2code' => 'http://coffee2code.com',
+				'coffee2code'    => 'http://coffee2code.com',
 				'Matt Mullenweg' => 'http://ma.tt',
-				'BuddyPress' => 'buddypress.org',
-				'my posts' => '/authors/scott',
-				'Scott Reilly' => ':coffee2code',
-				'c2c' => ':coffee2code',
-				'me' => ':c2c',
-				'blank' => '',
+				'BuddyPress'     => 'buddypress.org',
+				'my posts'       => '/authors/scott',
+				'Scott Reilly'   => ':coffee2code',
+				'c2c'            => ':coffee2code',
+				'me'             => ':c2c',
+				'blank'          => '',
+				'Cocktail glacé' => 'http://www.domain.com/cocktail-glace.html',
 			),
 		);
 		$settings = wp_parse_args( $settings, $defaults );
@@ -79,6 +82,23 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		return $filters;
 	}
 
+	// Taken from example in readme.txt.
+	function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $link_for_text  ) {
+		// The string that you chose to separate the link URL and the title attribute text.
+		$separator = ' || ';
+
+		// Only change the linked text if a title has been defined
+		if ( false !== strpos( $link_for_text, $separator ) ) {
+			// Get the link and title that was defined for the text to be linked.
+			list( $link, $title ) = explode( $separator, $link_for_text );
+
+			// Make the link the way you want.
+			$display_link = '<a href="' . esc_url( $link ) . '" title="' . $title . '">' . $text_to_link . '</a>';
+		}
+
+		return $display_link;
+	}
+
 
 	/**
 	 *
@@ -86,6 +106,10 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	 *
 	 */
 
+
+	function test_get_version() {
+		$this->assertEquals( '1.6', c2c_LinkifyText::get_instance()->version() );
+	}
 
 	function test_linkifies_text() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
@@ -116,6 +140,12 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, $this->linkify_text( $expected ) );
 	}
 
+	function test_does_not_link_within_shortcodes() {
+		$expected = '[code user="coffee2code"] coffee2code [/code]';
+
+		$this->assertEquals( $expected, $this->linkify_text( $expected ) );
+	}
+
 	function test_empty_link_does_not_linkify_text() {
 		$this->assertEquals( 'blank', $this->linkify_text( 'blank' ) );
 	}
@@ -126,6 +156,23 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, $this->linkify_text( 'coffee2code' ) );
 		$this->assertEquals( $expected, $this->linkify_text( 'Coffee2code' ) );
 		$this->assertEquals( $expected, $this->linkify_text( 'COFFEE2CODE' ) );
+	}
+
+	function test_linkifies_text_with_special_character() {
+		$expected = $this->expected_link( 'Cocktail glacé', 'http://www.domain.com/cocktail-glace.html' );
+
+		$this->assertEquals( $expected, $this->linkify_text( 'Cocktail glacé' ) );
+	}
+
+	// This affirms a limitation: mb_ereg_replace() (as used for search strings
+	// with multibyte characters) does't support limiting number of replacements.
+	// Ideally this test should fail with only one replacement performed.
+	function test_linkifies_text_with_special_character_multiple_times_despite_a_limit() {
+		$expected = $this->expected_link( 'Cocktail glacé', 'http://www.domain.com/cocktail-glace.html' );
+
+		$this->set_option( array( 'replace_once' => true ) );
+
+		$this->assertEquals( "$expected $expected $expected", $this->linkify_text( 'Cocktail glacé Cocktail glacé Cocktail glacé' ) );
 	}
 
 	function test_linkifies_once_via_setting() {
@@ -232,6 +279,18 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 
 	function test_nested_link_referencing_not_supported() {
 		$this->assertEquals( 'me', $this->linkify_text( 'me' ) );
+	}
+
+	function test_defining_custom_link_markup_via_filter() {
+		// Redine text_to_link to add title attribute text after the link in the link text.
+		$this->set_option( array( 'text_to_link' => array( 'coffee2code' => 'http://coffee2code.com || Scott Reilly' ) ) );
+		// Add custom handler via filter.
+		add_filter( 'c2c_linkify_text_linked_text', array( $this, 'add_title_attribute_to_linkified_text' ), 10, 3 );
+
+		$this->assertEquals(
+			'<a href="http://coffee2code.com" title="Scott Reilly">coffee2code</a>',
+			$this->linkify_text( 'coffee2code' )
+		);
 	}
 
 }

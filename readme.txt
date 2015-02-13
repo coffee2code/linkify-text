@@ -5,14 +5,14 @@ Tags: text, link, hyperlink, autolink, replace, shortcut, shortcuts, post, post 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.6
-Tested up to: 3.8
-Stable tag: 1.5
+Tested up to: 4.1
+Stable tag: 1.6
 
 Automatically hyperlink words or phrases in your posts.
 
 == Description ==
 
-This plugin allows you to define words or phrases that, whenever they appear in your posts or pages, get automatically linked to the URLs of your choosing. For instance, wherever you may mention the word "WordPress", that can get automatically linked as "[WordPress](http://wordpress.org)".
+This plugin allows you to define words or phrases that, whenever they appear in your posts or pages, get automatically linked to the URLs of your choosing. For instance, wherever you may mention the word "WordPress", that can get automatically linked as "[WordPress](https://wordpress.org)".
 
 Additional features of the plugin controlled via settings and filters:
 
@@ -22,7 +22,7 @@ Additional features of the plugin controlled via settings and filters:
 
 You can also link multiple terms to the same link and only define that link once in the settings via use of a special link syntax.
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/linkify-text/) | [Plugin Directory Page](http://wordpress.org/plugins/linkify-text/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/linkify-text/) | [Plugin Directory Page](https://wordpress.org/plugins/linkify-text/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
@@ -63,13 +63,13 @@ By default, yes. There is a setting you can change so that only the first occurr
 Yes. You can reference another term by specifying its link as another term in the list prepended with a colon (':'). For instance:
 
 `
-WP => http://wordpress.org,
+WP => https://wordpress.org,
 WordPress => :WP
 dotorg => :WP
 .org => :WP
 `
 
-Given the above terms to link, all terms would link to 'http://wordpress.org'. The latter three all reference the link used for the term "WP".
+Given the above terms to link, all terms would link to 'https://wordpress.org'. The latter three all reference the link used for the term "WP".
 
 NOTE: The referenced term must have an actual link defined and not be a reference to another term. (Basically, nested references are not currently supported.)
 
@@ -84,6 +84,39 @@ function more_text_replacements( $filters ) {
 	$filters[] = 'the_meta'; // Here you could put in the name of any filter you want
 	return $filters;
 }
+`
+
+= Can I only have text linkification take place for only a part of a post (such as text inside certain tags, or except for text in certain tags)? =
+
+No. The plugin applies fully to the post content. With some non-trivial coding the plugin could be utilized to affect only targeted parts of a post's content, but it's not something that will be built into the plugin.
+
+= Can I change how the link gets created because I want to add a 'title' attribute to the link? =
+
+Yes, with a bit of code. You can define the title attribute text in your replacement string, like so:
+
+`
+WP => https://wordpress.org || This is the link title
+`
+
+Now the code:
+
+`
+function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $link_for_text  ) {
+	// The string that you chose to separate the link URL and the title attribute text.
+	$separator = ' || ';
+
+	// Only change the linked text if a title has been defined
+	if ( false !== strpos( $link_for_text, $separator ) ) {
+		// Get the link and title that was defined for the text to be linked.
+		list( $link, $title ) = explode( $separator, $link_for_text );
+
+		// Make the link the way you want.
+		$display_link = '<a href="' . esc_url( $link ) . '" title="' . $title . '">' . $text_to_link . '</a>';
+	}
+
+	return $display_link;
+}
+add_filter( 'c2c_linkify_text_linked_text', 'add_title_attribute_to_linkified_text', 10, 3 );
 `
 
 = Does this plugin include unit tests? =
@@ -185,6 +218,23 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 
 == Changelog ==
 
+= 1.6 (2015-02-12) =
+* Prevent text replacements from taking place within shortcode attributes or content. props @rbonk
+* Support linkifying multibyte strings. NOTE: Multibyte strings don't honor limiting their replacement within a piece of text to once
+* Use preg_quote() to escape user input used in regex
+* Update plugin framework to 039
+* Add check to prevent execution of code if file is directly accessed
+* Minor plugin header reformatting
+* Minor code reformatting (spacing, bracing)
+* Change documentation links to wp.org to be https
+* Add an FAQ question
+* Note compatibility through WP 4.1+
+* Update copyright date (2015)
+* Add an FAQ question
+* Add more unit tests
+* Add plugin icon
+* Regenerate .pot
+
 = 1.5 (2014-01-04) =
 * Add setting to allow limiting linkification to once per term per text
 * Add filter 'c2c_linkify_text_replace_once'
@@ -224,6 +274,9 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 
 
 == Upgrade Notice ==
+
+= 1.6 =
+Recommended update: prevented linkification of text within shortcodes; added support for linkifying multibyle text; updated plugin framework to version 039; noted compatibility through WP 4.1+; added plugin icon.
 
 = 1.5 =
 Recommended update: added ability to reference another term's link; added setting to allow limiting linkification to once per term per post; improved validation of data received; added unit tests; noted compatibility through WP 3.8+

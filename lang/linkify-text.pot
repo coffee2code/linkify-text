@@ -1,15 +1,15 @@
-# Translation of the WordPress plugin Linkify Text v1.5 by Scott Reilly.
+# Translation of the WordPress plugin Linkify Text v1.6 by Scott Reilly.
 # Copyright (C) 2014 Scott Reilly
 # This file is distributed under the same license as the Linkify Text plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Linkify Text 1.5\n"
+"Project-Id-Version: Linkify Text 1.6\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/linkify-text\n"
-"POT-Creation-Date: 2014-01-04 21:56:15+00:00\n"
+"POT-Creation-Date: 2015-02-13 05:58:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -93,42 +93,48 @@ msgstr ""
 msgid "Did you find this plugin useful?"
 msgstr ""
 
-#. #-#-#-#-#  linkify-text.pot (Linkify Text 1.5)  #-#-#-#-#
+#. #-#-#-#-#  linkify-text.pot (Linkify Text 1.6)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
-#: linkify-text.php:108 linkify-text.php:109
+#: linkify-text.php:107 linkify-text.php:108
 msgid "Linkify Text"
 msgstr ""
 
-#: linkify-text.php:117
+#: linkify-text.php:116
 msgid "Text and Links"
 msgstr ""
 
-#: linkify-text.php:118
+#: linkify-text.php:117
 msgid ""
 "Define only one text and associated link per line, and don't span lines."
 msgstr ""
 
-#: linkify-text.php:121
+#: linkify-text.php:120
 msgid "Enable text linkification in comments?"
 msgstr ""
 
-#: linkify-text.php:125
+#: linkify-text.php:124
 msgid "Limit linkifications to once per term per post?"
 msgstr ""
 
-#: linkify-text.php:126
+#: linkify-text.php:125
 msgid ""
 "If checked, then each term will only be linkified the first time it appears "
 "in a post."
 msgstr ""
 
-#: linkify-text.php:129
+#: linkify-text.php:128
 msgid "Case sensitive text matching?"
+msgstr ""
+
+#: linkify-text.php:129
+msgid ""
+"If checked, then linkification of WordPress would also affect wordpress."
 msgstr ""
 
 #: linkify-text.php:130
 msgid ""
-"If checked, then linkification of WordPress would also affect wordpress."
+"NOTE: If the text to be linked contains multibyte characters, this setting "
+"is not honored."
 msgstr ""
 
 #: linkify-text.php:154
@@ -148,7 +154,7 @@ msgstr ""
 #: linkify-text.php:159
 msgid ""
 "Where <code>WordPress</code> is the text you want to get linked and "
-"<code>http://wordpress.org</code> would be what the target for that link."
+"<code>https://wordpress.org</code> would be what the target for that link."
 msgstr ""
 
 #: linkify-text.php:160
