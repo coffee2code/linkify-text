@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.6
 Tested up to: 4.1
-Stable tag: 1.6
+Stable tag: 1.7
 
 Automatically hyperlink words or phrases in your posts.
 
@@ -66,10 +66,9 @@ Yes. You can reference another term by specifying its link as another term in th
 WP => https://wordpress.org,
 WordPress => :WP
 dotorg => :WP
-.org => :WP
 `
 
-Given the above terms to link, all terms would link to 'https://wordpress.org'. The latter three all reference the link used for the term "WP".
+Given the above terms to link, all terms would link to 'https://wordpress.org'. The latter two all reference the link used for the term "WP".
 
 NOTE: The referenced term must have an actual link defined and not be a reference to another term. (Basically, nested references are not currently supported.)
 
@@ -78,12 +77,17 @@ NOTE: The referenced term must have an actual link defined and not be a referenc
 You can add to the list of filters that get text linkified using something like this (added to your theme's functions.php file, for instance):
 
 `
-// Enable text linkification for custom fields
-add_filter( 'c2c_linkify_text_filters', 'more_text_replacements' );
+/**
+ * Enable text linkification for custom fields.
+ *
+ * @param array $filters Array of filters that the plugin should hook.
+ * @return array
+ */
 function more_text_replacements( $filters ) {
 	$filters[] = 'the_meta'; // Here you could put in the name of any filter you want
 	return $filters;
 }
+add_filter( 'c2c_linkify_text_filters', 'more_text_replacements' );
 `
 
 = Can I only have text linkification take place for only a part of a post (such as text inside certain tags, or except for text in certain tags)? =
@@ -218,6 +222,15 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 
 == Changelog ==
 
+= 1.7 (2015-02-20) =
+* Improve support of '&' in text to be linked by recognizing its encoded alternatives ('&amp;', '&#038;') as equivalents
+* Prevent linkification of text if the provided link doesn't look anything like a link
+* Change regex delimiter from '|' to '~'
+* Minor refactoring of multibyte handling
+* Add to and improve unit tests
+* Add help text under primary textarea mentioning the term referencing feature
+* Minor documentation changes throughout
+
 = 1.6 (2015-02-12) =
 * Prevent text replacements from taking place within shortcode attributes or content. props @rbonk
 * Support linkifying multibyte strings. NOTE: Multibyte strings don't honor limiting their replacement within a piece of text to once
@@ -275,8 +288,11 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 
 == Upgrade Notice ==
 
+= 1.7 =
+Enhancement update: improved support for '&' in text to be linkified; no longer create a link when the link look anything like a URL or filename; minor refactoring; added more unit tests
+
 = 1.6 =
-Recommended update: prevented linkification of text within shortcodes; added support for linkifying multibyle text; updated plugin framework to version 039; noted compatibility through WP 4.1+; added plugin icon.
+Recommended update: prevented linkification of text within shortcodes; added support for linkifying multibyte text; updated plugin framework to version 039; noted compatibility through WP 4.1+; added plugin icon.
 
 = 1.5 =
 Recommended update: added ability to reference another term's link; added setting to allow limiting linkification to once per term per post; improved validation of data received; added unit tests; noted compatibility through WP 3.8+

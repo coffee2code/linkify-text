@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Linkify Text
- * Version:     1.6
+ * Version:     1.7
  * Plugin URI:  http://coffee2code.com/wp-plugins/linkify-text/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
@@ -18,20 +18,18 @@
  * =>> Or visit: https://wordpress.org/plugins/linkify-text/
  *
  * TODO
- * * Allow links to point to other text entries so a link can be defined once:
- *      WP => https://wordpress.org
- *      WordPress => WP
- *      start blogging => WP
- * * Add class to link. Maybe add filter as well. (Q was asked about opening link in new window)
- * * Setting to open links in new window? (Forum request)
- * * Setting to prevent linkification if link points to current page? (Forum request)
- * * For multibyte strings to be linkified, honor the replace_once setting.
- * * Consider adding more options: specific number of replacements, open links in new tab, other
- * *    common site places to filter
+ * - Add class to link. Maybe add filter as well. (Q was asked about opening link in new window)
+ * - Setting to open links in new window? (Forum request)
+ * - Setting to prevent linkification if link points to current page? (Forum request)
+ * - For multibyte strings to be linkified, honor the replace_once setting.
+ * - Consider adding more options: specific number of replacements, open links in new tab, other
+ *   common site places to filter
+ * - Handle HTML special characters that Visual editor converts (like how '&' becomes '&amp;',
+ *   which is explicitly handled). Are there others that should be handled?
  *
  * @package Linkify_Text
  * @author Scott Reilly
- * @version 1.6
+ * @version 1.7
  */
 
 /*
@@ -61,7 +59,9 @@ require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 class c2c_LinkifyText extends C2C_Plugin_039 {
 
 	/**
-	 * @var c2c_LinkifyText The one true instance
+	 * The one true instance.
+	 *
+	 * @var c2c_LinkifyText
 	 */
 	private static $instance;
 
@@ -82,7 +82,7 @@ class c2c_LinkifyText extends C2C_Plugin_039 {
 	 * Constructor.
 	 */
 	protected function __construct() {
-		parent::__construct( '1.6', 'linkify-text', 'c2c', __FILE__, array() );
+		parent::__construct( '1.7', 'linkify-text', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;
@@ -116,7 +116,8 @@ class c2c_LinkifyText extends C2C_Plugin_039 {
 				),
 				'allow_html' => true, 'no_wrap' => true, 'input_attributes' => 'rows="15" cols="40"',
 				'label' => __( 'Text and Links', $this->textdomain ),
-				'help'  => __( 'Define only one text and associated link per line, and don\'t span lines.', $this->textdomain ),
+				'help'  => __( 'Define only one text and associated link per line, and don\'t span lines.', $this->textdomain ) . '<br />' .
+						   __( 'Use a colon-prefixed term instead of a link to point to that term\'s link, e.g. <code>WP => :WordPress</code> will use the same link defined for WordPress', $this->textdomain ),
 			),
 			'linkify_text_comments' => array( 'input' => 'checkbox', 'default' => false,
 				'label' => __( 'Enable text linkification in comments?', $this->textdomain ),
@@ -211,10 +212,12 @@ dotorg => :WP
 
 		$text = ' ' . $text . ' ';
 
+		$can_do_mb = function_exists( 'mb_regex_encoding' ) && function_exists( 'mb_ereg_replace' ) && function_exists( 'mb_strlen' );
+
 		if ( ! empty( $text_to_link ) ) {
 
 			// Store original mb_regex_encoding and then set it to UTF-8.
-			if ( function_exists( 'mb_regex_encoding' ) ) {
+			if ( $can_do_mb ) {
 				$mb_regex_encoding = mb_regex_encoding();
 				mb_regex_encoding( 'UTF-8' );
 			}
@@ -234,30 +237,36 @@ dotorg => :WP
 
 				// If the link does not contain a protocol and isn't absolute, prepend 'http://'
 				// Sorry, not supporting non-root relative paths.
-				if ( strpos( $link, '://' ) === false && ! path_is_absolute( $link ) ) {
+				if ( false === strpos( $link, '://' ) && ! path_is_absolute( $link ) ) {
+					// Quick and rough check that the link looks like a link to prevent user
+					// making invalid link. A period is sufficient to denote a file or domain.
+					if ( false === strpos( $link, '.' ) ) {
+						continue;
+					}
 					$link = 'http://' . $link;
 				}
 
 				$new_text = '<a href="' . esc_url( $link ) . '">' . $old_text . '</a>';
 				$new_text = apply_filters( 'c2c_linkify_text_linked_text', $new_text, $old_text, $link );
 
+				// Escape user-provided string from having regex characters.
+				$old_text = preg_quote( $old_text, '~' );
+
+				// If the string to be linked includes '&', consider '&amp;' and '&#038;' equivalents.
+				// Visual editor will convert the former, but users aren't aware of the conversion.
+				if ( false !== strpos( $old_text, '&' ) ) {
+					$old_text = str_replace( '&', '&(amp;|#038;)?', $old_text );
+				}
+
+				$regex = "(?![<\[].*?)\b{$old_text}\b(?![^<>]*?[\]>])";
+
 				// If the text to be replaced has multibyte character(s), use
 				// mb_ereg_replace() if possible.
-				if ( function_exists( 'mb_ereg_replace' ) && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
+				if ( $can_do_mb && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
 					// NOTE: mb_ereg_replace() does not support limiting the number of replacements.
-					$text = mb_ereg_replace(
-						"(?![<\[].*?)\b" . preg_quote( $old_text ) . "\b(?![^<>]*?[\]>])",
-						$new_text,
-						$text,
-						$preg_flags
-					);
+					$text = mb_ereg_replace( $regex, $new_text, $text, $preg_flags );
 				} else {
-					$text = preg_replace(
-						"|(?![<\[].*?)\b" . preg_quote( $old_text ) . "\b(?![^<>]*?[\]>])|{$preg_flags}",
-						$new_text,
-						$text,
-						$limit
-					);
+					$text = preg_replace( "~{$regex}~{$preg_flags}", $new_text, $text, $limit );
 				}
 			}
 
@@ -272,7 +281,7 @@ dotorg => :WP
 		}
 
 		return trim( $text );
-	} //end linkify_text()
+	}
 
 } // end c2c_LinkifyText
 
