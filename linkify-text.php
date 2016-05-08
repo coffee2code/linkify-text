@@ -189,7 +189,7 @@ dotorg => :WP
 		// Note that the priority must be set high enough to avoid links inserted by the plugin from
 		// getting omitted as a result of any link stripping that may be performed.
 		$options = $this->get_options();
-		if ( apply_filters( 'c2c_linkify_text_comments', $options['linkify_text_comments'] ) ) {
+		if ( apply_filters( 'c2c_linkify_text_comments', (bool) $options['linkify_text_comments'] ) ) {
 			$text = $this->linkify_text( $text );
 		}
 
@@ -205,8 +205,8 @@ dotorg => :WP
 	public function linkify_text( $text ) {
 		$options         = $this->get_options();
 		$text_to_link    = apply_filters( 'c2c_linkify_text',                $options['text_to_link'] );
-		$case_sensitive  = apply_filters( 'c2c_linkify_text_case_sensitive', $options['case_sensitive'] );
-		$limit           = apply_filters( 'c2c_linkify_text_replace_once',   $options['replace_once'] ) === true ? '1' : '-1';
+		$case_sensitive  = apply_filters( 'c2c_linkify_text_case_sensitive', (bool) $options['case_sensitive'] );
+		$limit           = apply_filters( 'c2c_linkify_text_replace_once',   (bool) $options['replace_once'] ) === true ? '1' : '-1';
 		$preg_flags      = $case_sensitive ? 's' : 'si';
 		$mb_regex_encoding = null;
 

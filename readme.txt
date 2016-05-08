@@ -223,6 +223,7 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 == Changelog ==
 
 = () =
+* Bugfix: Fix being able to limit text replacements to just once a post.
 * Bugfix: Preserve capitalization of source string being linkified. Fixes case-sensitive matches where the source string is differently cased than defined in setting.
 
 = 1.7 (2015-02-20) =

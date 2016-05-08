@@ -258,6 +258,14 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected coffee2code coffee2code", $this->linkify_text( 'coffee2code coffee2code coffee2code' ) );
 	}
 
+	function test_linkifies_once_via_trueish_setting_value() {
+		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
+		$this->test_linkifies_single_term_multiple_times();
+		$this->set_option( array( 'replace_once' => '1' ) );
+
+		$this->assertEquals( "$expected coffee2code coffee2code", $this->linkify_text( 'coffee2code coffee2code coffee2code' ) );
+	}
+
 	function test_linkifies_once_via_filter() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 		$this->test_linkifies_single_term_multiple_times();
