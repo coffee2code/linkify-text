@@ -246,7 +246,7 @@ dotorg => :WP
 					$link = 'http://' . $link;
 				}
 
-				$new_text = '<a href="' . esc_url( $link ) . '">' . $old_text . '</a>';
+				$new_text = '<a href="' . esc_url( $link ) . '">\\1</a>';
 				$new_text = apply_filters( 'c2c_linkify_text_linked_text', $new_text, $old_text, $link );
 
 				// Escape user-provided string from having regex characters.
@@ -258,7 +258,7 @@ dotorg => :WP
 					$old_text = str_replace( '&', '&(amp;|#038;)?', $old_text );
 				}
 
-				$regex = "(?![<\[].*?)\b{$old_text}\b(?![^<>]*?[\]>])";
+				$regex = "(?![<\[].*?)\b({$old_text})\b(?![^<>]*?[\]>])";
 
 				// If the text to be replaced has multibyte character(s), use
 				// mb_ereg_replace() if possible.
