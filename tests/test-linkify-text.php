@@ -136,7 +136,11 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 	function test_plugin_framework_class_name() {
-		$this->assertTrue( class_exists( 'C2C_Plugin_039' ) );
+		$this->assertTrue( class_exists( 'c2c_LinkifyText_Plugin_042' ) );
+	}
+
+	function test_plugin_framework_version() {
+		$this->assertEquals( '042', c2c_LinkifyText::get_instance()->c2c_plugin_version() );
 	}
 
 	function test_get_version() {

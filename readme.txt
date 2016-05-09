@@ -222,9 +222,16 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 
 == Changelog ==
 
-= () =
+= 1.8 () =
 * Bugfix: Fix being able to limit text replacements to just once a post.
 * Bugfix: Preserve capitalization of source string being linkified. Fixes case-sensitive matches where the source string is differently cased than defined in setting.
+* Change: Update plugin framework to 042:
+    * Change class name to c2c_LinkifyText_Plugin_042 to be plugin-specific.
+    * Set textdomain using a string instead of a variable.
+    * Don't load textdomain from file.
+    * Change admin page header from 'h2' to 'h1' tag.
+    * Add `c2c_plugin_version()`.
+    * Formatting improvements to inline docs.
 * Change: Declare class as final.
 * Change: Prevent web invocation of unit test bootstrap.php.
 * New: Create empty index.php to prevent files from being listed if web server has enabled directory listings.
