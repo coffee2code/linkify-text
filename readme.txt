@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: text, link, hyperlink, autolink, replace, shortcut, shortcuts, post, post content, coffee2code
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 3.6
-Tested up to: 4.1
+Requires at least: 4.1
+Tested up to: 4.5
 Stable tag: 1.7
 
 Automatically hyperlink words or phrases in your posts.
@@ -234,6 +234,8 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
     * Formatting improvements to inline docs.
 * Change: Declare class as final.
 * Change: Minor documentation tweaks.
+* Change: Note compatibility through WP 4.5+.
+* Change: Remove support for versions of WordPress older than 4.1.
 * Change: Update copyright date (2016).
 * Change: Prevent web invocation of unit test bootstrap.php.
 * New: Create empty index.php to prevent files from being listed if web server has enabled directory listings.

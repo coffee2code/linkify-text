@@ -11,7 +11,7 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Description: Automatically hyperlink words or phrases in your posts.
  *
- * Compatible with WordPress 3.6 through 4.1+.
+ * Compatible with WordPress 4.1 through 4.5+.
  *
  * =>> Read the accompanying readme.txt file for instructions and documentation.
  * =>> Also, visit the plugin's homepage for additional information and updates.
