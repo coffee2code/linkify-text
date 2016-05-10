@@ -233,6 +233,7 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
     * Add `c2c_plugin_version()`.
     * Formatting improvements to inline docs.
 * Change: Declare class as final.
+* Change: Update copyright date (2016).
 * Change: Prevent web invocation of unit test bootstrap.php.
 * New: Create empty index.php to prevent files from being listed if web server has enabled directory listings.
 * New: Add LICENSE file.
