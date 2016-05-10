@@ -112,10 +112,10 @@ function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $l
 	// Only change the linked text if a title has been defined
 	if ( false !== strpos( $link_for_text, $separator ) ) {
 		// Get the link and title that was defined for the text to be linked.
-		list( $link, $title ) = explode( $separator, $link_for_text );
+		list( $link, $title ) = explode( $separator, $link_for_text, 2 );
 
 		// Make the link the way you want.
-		$display_link = '<a href="' . esc_url( $link ) . '" title="' . $title . '">' . $text_to_link . '</a>';
+		$display_link = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '">' . $text_to_link . '</a>';
 	}
 
 	return $display_link;
@@ -233,6 +233,7 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
     * Add `c2c_plugin_version()`.
     * Formatting improvements to inline docs.
 * Change: Declare class as final.
+* Change: Minor documentation tweaks.
 * Change: Update copyright date (2016).
 * Change: Prevent web invocation of unit test bootstrap.php.
 * New: Create empty index.php to prevent files from being listed if web server has enabled directory listings.

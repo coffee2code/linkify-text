@@ -26,9 +26,10 @@
  *   common site places to filter
  * - Handle HTML special characters that Visual editor converts (like how '&' becomes '&amp;',
  *   which is explicitly handled). Are there others that should be handled?
+ * - Inline documentation for hooks.
  *
  * @package Linkify_Text
- * @author Scott Reilly
+ * @author  Scott Reilly
  * @version 1.7
  */
 
@@ -230,7 +231,7 @@ dotorg => :WP
 					$link = $text_to_link[ substr( $link, 1 ) ];
 				}
 
-				// If link is empty, or is another term reference, don't linkify
+				// If link is empty, or is another term reference, don't linkify.
 				if ( empty( $link ) || ':' === $link[0] ) {
 					continue;
 				}
