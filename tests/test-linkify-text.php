@@ -4,7 +4,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 
 	protected static $text_to_link = array(
 		'coffee2code'    => 'http://coffee2code.com',
-		'Matt Mullenweg' => 'http://ma.tt',
+		'Matt Mullenweg' => 'https://ma.tt',
 		'BuddyPress'     => 'buddypress.org',
 		'my posts'       => '/authors/scott',
 		'my readme'      => 'readme.html',
@@ -159,7 +159,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( "ends with period $expected.", $this->linkify_text( 'ends with period coffee2code.' ) );
 		$this->assertEquals( "$expected starts", $this->linkify_text( 'coffee2code starts' ) );
 
-		$this->assertEquals( $this->expected_link( 'Matt Mullenweg', 'http://ma.tt' ), $this->linkify_text( 'Matt Mullenweg' ) );
+		$this->assertEquals( $this->expected_link( 'Matt Mullenweg', 'https://ma.tt' ), $this->linkify_text( 'Matt Mullenweg' ) );
 	}
 
 	function test_linkifies_text_with_ampersand() {

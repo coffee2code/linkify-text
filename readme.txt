@@ -184,7 +184,7 @@ Example:
 add_filter( 'c2c_linkify_text', 'my_text_linkifications' );
 function my_text_linkifications( $replacements ) {
 	// Add text link
-	$replacements['Matt Mullenweg'] => 'http://ma.tt';
+	$replacements['Matt Mullenweg'] => 'https://ma.tt';
 	// Unset a text link that we never want defined
 	if ( isset( $replacements['WordPress'] ) )
 		unset( $replacements['WordPress'] );
