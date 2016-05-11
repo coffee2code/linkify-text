@@ -6,7 +6,6 @@
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
  * Text Domain: linkify-text
- * Domain Path: /lang/
  * License:     GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Description: Automatically hyperlink words or phrases in your posts.
@@ -107,8 +106,8 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_042 {
 	 * Initializes the plugin's configuration and localizable text variables.
 	 */
 	protected function load_config() {
-		$this->name      = __( 'Linkify Text', $this->textdomain );
-		$this->menu_name = __( 'Linkify Text', $this->textdomain );
+		$this->name      = __( 'Linkify Text', 'linkify-text' );
+		$this->menu_name = __( 'Linkify Text', 'linkify-text' );
 
 		$this->config = array(
 			'text_to_link' => array( 'input' => 'inline_textarea', 'datatype' => 'hash', 'default' => array(
@@ -116,22 +115,22 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_042 {
 					"coffee2code" => "http://coffee2code.com"
 				),
 				'allow_html' => true, 'no_wrap' => true, 'input_attributes' => 'rows="15" cols="40"',
-				'label' => __( 'Text and Links', $this->textdomain ),
-				'help'  => __( 'Define only one text and associated link per line, and don\'t span lines.', $this->textdomain ) . '<br />' .
-						   __( 'Use a colon-prefixed term instead of a link to point to that term\'s link, e.g. <code>WP => :WordPress</code> will use the same link defined for WordPress', $this->textdomain ),
+				'label' => __( 'Text and Links', 'linkify-text' ),
+				'help'  => __( 'Define only one text and associated link per line, and don\'t span lines.', 'linkify-text' ) . '<br />' .
+						   __( 'Use a colon-prefixed term instead of a link to point to that term\'s link, e.g. <code>WP => :WordPress</code> will use the same link defined for WordPress', 'linkify-text' ),
 			),
 			'linkify_text_comments' => array( 'input' => 'checkbox', 'default' => false,
-				'label' => __( 'Enable text linkification in comments?', $this->textdomain ),
+				'label' => __( 'Enable text linkification in comments?', 'linkify-text' ),
 				'help'  => '',
 			),
 			'replace_once' => array( 'input' => 'checkbox', 'default' => false,
-				'label' => __( 'Limit linkifications to once per term per post?', $this->textdomain ),
-				'help'  => __( 'If checked, then each term will only be linkified the first time it appears in a post.', $this->textdomain ),
+				'label' => __( 'Limit linkifications to once per term per post?', 'linkify-text' ),
+				'help'  => __( 'If checked, then each term will only be linkified the first time it appears in a post.', 'linkify-text' ),
 			),
 			'case_sensitive' => array( 'input' => 'checkbox', 'default' => false,
-				'label' => __( 'Case sensitive text matching?', $this->textdomain ),
-				'help'  => __( 'If checked, then linkification of WordPress would also affect wordpress.', $this->textdomain ) . ' ' .
-						   __( 'NOTE: If the text to be linked contains multibyte characters, this setting is not honored.', $this->textdomain ),
+				'label' => __( 'Case sensitive text matching?', 'linkify-text' ),
+				'help'  => __( 'If checked, then linkification of WordPress would also affect wordpress.', 'linkify-text' ) . ' ' .
+						   __( 'NOTE: If the text to be linked contains multibyte characters, this setting is not honored.', 'linkify-text' ),
 			)
 		);
 	}
@@ -155,26 +154,26 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_042 {
 	 * @param string $localized_heading_text (optional) Localized page heading text.
 	 */
 	public function options_page_description( $localized_heading_text = '' ) {
-		parent::options_page_description( __( 'Linkify Text Settings', $this->textdomain ) );
+		parent::options_page_description( __( 'Linkify Text Settings', 'linkify-text' ) );
 
-		echo '<p>' . __( 'Description: Automatically hyperlink words or phrases in your posts.', $this->textdomain ) . '</p>';
-		echo '<p>' . __( 'Define text and the URL they should be linked to in the field below. The format should be like this:', $this->textdomain ) . '</p>';
+		echo '<p>' . __( 'Description: Automatically hyperlink words or phrases in your posts.', 'linkify-text' ) . '</p>';
+		echo '<p>' . __( 'Define text and the URL they should be linked to in the field below. The format should be like this:', 'linkify-text' ) . '</p>';
 		echo "<blockquote><code>WordPress => https://wordpress.org</code></blockquote>";
-		echo '<p>' . __( 'Where <code>WordPress</code> is the text you want to get linked and <code>https://wordpress.org</code> would be what the target for that link.', $this->textdomain ) . '</p>';
-		echo '<p>' . __( 'You can link multiple terms to the same link and only have to define the link once. Simply provide the link for a given term, then for subsequent terms sharing the same link, use the original term prepended with a colon as the link, e.g.', $this->textdomain ) . '</p>';
+		echo '<p>' . __( 'Where <code>WordPress</code> is the text you want to get linked and <code>https://wordpress.org</code> would be what the target for that link.', 'linkify-text' ) . '</p>';
+		echo '<p>' . __( 'You can link multiple terms to the same link and only have to define the link once. Simply provide the link for a given term, then for subsequent terms sharing the same link, use the original term prepended with a colon as the link, e.g.', 'linkify-text' ) . '</p>';
 		echo '<blockquote><pre><code>WP => https://wordpress.org
 WordPress => :WP
 dotorg => :WP
 </code></pre></blockquote>';
-		echo '<p>' . sprintf( __( 'All of the above terms would link to %s.', $this->textdomain ), 'https://wordpress.org' ) . '</p>';
-		echo '<p>' . __( 'NOTE: A referenced term must have a link; it cannot be a reference to another term.', $this->textdomain ) . '</p>';
-		echo '<p>' . __( 'Other considerations:', $this->textdomain ) . '</p>';
+		echo '<p>' . sprintf( __( 'All of the above terms would link to %s.', 'linkify-text' ), 'https://wordpress.org' ) . '</p>';
+		echo '<p>' . __( 'NOTE: A referenced term must have a link; it cannot be a reference to another term.', 'linkify-text' ) . '</p>';
+		echo '<p>' . __( 'Other considerations:', 'linkify-text' ) . '</p>';
 		echo '<ul class="c2c-plugin-list"><li>';
-		echo __( 'List the more specific matches early to avoid stomping on another of your links. For example, if you have both <code>WordPress</code> and <code>WordPress Support Forums</code> as text to be linked, put <code>WordPress Support Forums</code> first; otherwise, the <code>WordPress</code> entry will match first, preventing the phrase <code>WordPress Support Forums</code> from ever being found.', $this->textdomain );
+		echo __( 'List the more specific matches early to avoid stomping on another of your links. For example, if you have both <code>WordPress</code> and <code>WordPress Support Forums</code> as text to be linked, put <code>WordPress Support Forums</code> first; otherwise, the <code>WordPress</code> entry will match first, preventing the phrase <code>WordPress Support Forums</code> from ever being found.', 'linkify-text' );
 		echo '</li><li>';
-		echo __( 'Text must represent a whole word or phrase, not a partial string.', $this->textdomain );
+		echo __( 'Text must represent a whole word or phrase, not a partial string.', 'linkify-text' );
 		echo '</li><li>';
-		echo __( 'If the protocol is not specified, then \'http://\' is assumed.', $this->textdomain );
+		echo __( 'If the protocol is not specified, then \'http://\' is assumed.', 'linkify-text' );
 		echo '</li></ul>';
 	}
 

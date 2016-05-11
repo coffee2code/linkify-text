@@ -232,6 +232,10 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
     * Change admin page header from 'h2' to 'h1' tag.
     * Add `c2c_plugin_version()`.
     * Formatting improvements to inline docs.
+* Change: Add support for language packs:
+    * Set textdomain using a string instead of a variable.
+    * Remove .pot file and /lang subdirectory.
+    * Remove 'Domain Path' plugin header.
 * Change: Declare class as final.
 * Change: Minor documentation tweaks.
 * Change: Note compatibility through WP 4.5+.
