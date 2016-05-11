@@ -112,10 +112,10 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		// Only change the linked text if a title has been defined
 		if ( false !== strpos( $link_for_text, $separator ) ) {
 			// Get the link and title that was defined for the text to be linked.
-			list( $link, $title ) = explode( $separator, $link_for_text );
+			list( $link, $title ) = explode( $separator, $link_for_text, 2 );
 
 			// Make the link the way you want.
-			$display_link = '<a href="' . esc_url( $link ) . '" title="' . $title . '">' . $text_to_link . '</a>';
+			$display_link = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '">' . $text_to_link . '</a>';
 		}
 
 		return $display_link;
