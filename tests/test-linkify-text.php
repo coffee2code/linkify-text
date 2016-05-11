@@ -167,11 +167,11 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 	function test_linkifies_text_with_html_encoded_amp_ampersand() {
-		$this->assertEquals( $this->expected_link( 'AT&T', self::$text_to_link[ 'AT&T' ] ), $this->linkify_text( 'AT&amp;T' ) );
+		$this->assertEquals( $this->expected_link( 'AT&amp;T', self::$text_to_link[ 'AT&T' ] ), $this->linkify_text( 'AT&amp;T' ) );
 	}
 
 	function test_linkifies_text_with_html_encoded_038_ampersand() {
-		$this->assertEquals( $this->expected_link( 'AT&T', self::$text_to_link[ 'AT&T' ] ), $this->linkify_text( 'AT&#038;T' ) );
+		$this->assertEquals( $this->expected_link( 'AT&#038;T', self::$text_to_link[ 'AT&T' ] ), $this->linkify_text( 'AT&#038;T' ) );
 	}
 
 	function test_linkifies_multibyte_text() {
