@@ -89,7 +89,11 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		return c2c_LinkifyText::get_instance()->linkify_text( $text );
 	}
 
-	function expected_link( $text, $link ) {
+	function expected_link( $text, $link = '' ) {
+		if ( ! $link && isset( self::$text_to_link[ $text ] ) ) {
+			$link = self::$text_to_link[ $text ];
+		}
+
 		return '<a href="' . $link . '">' . $text . '</a>';
 	}
 
