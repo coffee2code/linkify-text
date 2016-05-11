@@ -298,6 +298,13 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'COFFEE2CODE', $this->linkify_text( 'COFFEE2CODE' ) );
 	}
 
+	function test_linkifies_with_case_insensitivity() {
+		// Note: This is also implicitly testing that case of the original text is preserved.
+		$this->assertEquals( $this->expected_link( 'coffee2code', 'http://coffee2code.com' ), $this->linkify_text( 'coffee2code' ) );
+		$this->assertEquals( $this->expected_link( 'Coffee2code', 'http://coffee2code.com' ), $this->linkify_text( 'Coffee2code' ) );
+		$this->assertEquals( $this->expected_link( 'COFFEE2CODE', 'http://coffee2code.com' ), $this->linkify_text( 'COFFEE2CODE' ) );
+	}
+
 	function test_linkifies_term_added_via_filter() {
 		$this->assertEquals( 'bbPress', $this->linkify_text( 'bbPress' ) );
 		$expected = $this->expected_link( 'bbPress', 'https://bbpress.org' );
