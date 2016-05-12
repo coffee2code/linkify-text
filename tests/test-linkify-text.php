@@ -190,16 +190,42 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected $expected $expected", $this->linkify_text( 'coffee2code coffee2code coffee2code' ) );
 	}
 
+	function test_linkifies_content_of_non_link_tags() {
+		$expected = '<strong><a href="http://coffee2code.com">coffee2code</a></strong>';
+
+		$this->assertEquals( $expected, $this->linkify_text( '<strong>coffee2code</strong>' ) );
+	}
+
 	function test_does_not_linkify_substrings() {
-		$this->assertEquals( 'xcoffee2code',  $this->linkify_text( 'xcoffee2code' ) );
-		$this->assertEquals( 'ycoffee2codey', $this->linkify_text( 'ycoffee2codey' ) );
-		$this->assertEquals( 'coffee2codez',  $this->linkify_text( 'coffee2codez' ) );
+		$expected = array(
+			'xcoffee2code',
+			'ycoffee2codey',
+			'coffee2codez',
+			'a coffee2codez',
+		);
+
+		foreach ( $expected as $e ) {
+			$this->assertEquals( $e, $this->linkify_text( $e ) );
+		}
 	}
 
 	function test_does_not_link_within_links() {
-		$expected = '<a href="http://coffee2code.net">coffee2code</a>';
+		$expected = '<a href="http://coffee2code.com">coffee2code</a>';
 
 		$this->assertEquals( $expected, $this->linkify_text( $expected ) );
+	}
+
+	function test_does_not_link_within_html_tags() {
+		$expected = array(
+			'<coffee2code>sample string</coffee2code>',
+			'<div class="coffee2code">sample string</div>',
+			'<span coffee2code="something">sample string</span>',
+			'<b title="a coffee2code project">sample string</b>',
+		);
+
+		foreach ( $expected as $e ) {
+			$this->assertEquals( $e, $this->linkify_text( $e ) );
+		}
 	}
 
 	function test_does_not_link_within_shortcode_tags() {

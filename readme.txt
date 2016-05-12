@@ -238,6 +238,7 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
     * Remove .pot file and /lang subdirectory.
     * Remove 'Domain Path' plugin header.
 * Change: Declare class as final.
+* Change: Add more unit tests.
 * Change: Minor documentation tweaks.
 * Change: Note compatibility through WP 4.5+.
 * Change: Remove support for versions of WordPress older than 4.1.
