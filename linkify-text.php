@@ -258,7 +258,7 @@ dotorg => :WP
 					$old_text = str_replace( '&', '&(amp;|#038;)?', $old_text );
 				}
 
-				$regex = "(?![<\[].*?)\b({$old_text})\b(?![^<>]*?[\]>])";
+				$regex = "(?![<\[].*)\b({$old_text})\b(?![^<>\[\]]*?[\]>])";
 
 				// If the text to be replaced has multibyte character(s), use
 				// mb_ereg_replace() if possible.

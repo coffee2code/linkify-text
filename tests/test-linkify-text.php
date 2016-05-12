@@ -202,10 +202,44 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, $this->linkify_text( $expected ) );
 	}
 
-	function test_does_not_link_within_shortcodes() {
-		$expected = '[code user="coffee2code"] coffee2code [/code]';
+	function test_does_not_link_within_shortcode_tags() {
+		$expected = array(
+			'[code user="coffee2code"]some text[/code]',
+			'[code user="a coffee2code test"]some text[/code]',
+			'[coffee2code]as if shortcode itself[/coffee2code]',
+		);
 
-		$this->assertEquals( $expected, $this->linkify_text( $expected ) );
+		foreach ( $expected as $e ) {
+			$this->assertEquals( $e, $this->linkify_text( $e ) );
+		}
+	}
+
+	function test_linkifies_within_shortcode_content() {
+		$this->assertEquals(
+			'[code user="ok"]aaa ' . $this->linkify_text( 'coffee2code' ) . ' bbb[/code]',
+			$this->linkify_text( '[code user="ok"]aaa coffee2code bbb[/code]' )
+		);
+	}
+
+	function test_linkifies_within_shortcode_content_adjacent_to_shortcode_tags() {
+		$this->assertEquals(
+			'[code user="ok"]' . $this->linkify_text( 'coffee2code' ) . '[/code]',
+			$this->linkify_text( '[code user="ok"]coffee2code[/code]' )
+		);
+	}
+
+	function test_linkifies_outside_preceeding_shortcode() {
+		$this->assertEquals(
+			'[code user="ok"]eee[/code] a ' . $this->linkify_text( 'coffee2code' ),
+			$this->linkify_text( '[code user="ok"]eee[/code] a coffee2code' )
+		);
+	}
+
+	function test_linkifies_outside_subsequent_shortcode() {
+		$this->assertEquals(
+			'a ' . $this->expected_link( 'coffee2code' ) . ' [code user="ok"]eee[/code]',
+			$this->linkify_text( 'a coffee2code [code user="ok"]eee[/code]' )
+		);
 	}
 
 	function test_empty_link_does_not_linkify_text() {
