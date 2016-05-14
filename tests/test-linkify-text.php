@@ -46,13 +46,11 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 
-
-	/*
-	 *
-	 * DATA PROVIDERS
-	 *
-	 */
-
+	//
+	//
+	// DATA PROVIDERS
+	//
+	//
 
 
 	public static function get_default_filters() {
@@ -75,13 +73,11 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 
-
-	/*
-	 *
-	 * HELPER FUNCTIONS
-	 *
-	 */
-
+	//
+	//
+	// HELPER FUNCTIONS
+	//
+	//
 
 
 	protected function set_option( $settings = array() ) {
@@ -133,13 +129,11 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 
-
-	/*
-	 *
-	 * TESTS
-	 *
-	 */
-
+	//
+	//
+	// TESTS
+	//
+	//
 
 
 	public function test_class_exists() {
