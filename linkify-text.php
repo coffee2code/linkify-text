@@ -222,8 +222,16 @@ dotorg => :WP
 				mb_regex_encoding( 'UTF-8' );
 			}
 
-			foreach ( $text_to_link as $old_text => $link ) {
+			// Sort array descending by key length. This way longer, more precise
+			// strings take precedence over shorter strings, preventing premature
+			// partial linking.
+			// E.g. if "abc" and "abc def" are both defined for linking and in that
+			// order, the string "abc def ghi" would match on "abc def", the longer
+			// string rather than the shorter, less precise "abc".
+			$keys = array_map( 'mb_strlen', array_keys( $text_to_link ) );
+			array_multisort( $keys, SORT_DESC, $text_to_link );
 
+			foreach ( $text_to_link as $old_text => $link ) {
 				// If the link starts with a colon, treat it as a special shortcut to the
 				// link for the referenced term. Nested referencing is not supported.
 				if ( ':' === $link[0] ) {

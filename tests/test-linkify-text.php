@@ -17,6 +17,11 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		'Cocktail glacé' => 'http://www.domain.com/cocktail-glace.html',
 		'AT&T'           => 'http://att.com',
 		'漢字はユニコード'  => 'http://php.net/manual/en/ref.mbstring.php',
+		'Apple iPhone 6' => 'http://example.com/apple1',
+		'iPhone 6'       => 'http://example.com/aople2',
+		'test'           => 'http://example.com/test1',
+		'test place'     => 'http://example.com/test2',
+		'example.com'    => 'http://example.com',
 	);
 
 	function setUp() {
@@ -272,12 +277,28 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'blank', $this->linkify_text( 'blank' ) );
 	}
 
-	function test_linkifies_with_case_insensitivity() {
-		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
+	/*
+	 * With 'Apple iPhone 6' followed by 'iPhone 6' as link defines, the string
+	 * 'Apple iPhone 6' should not have the 'iPhone 6' linkifcation applied to it.
+	 */
+	function test_does_not_linkify_a_general_term_that_is_included_in_earlier_listed_term() {
+		$string = 'Apple iPhone 6';
 
-		$this->assertEquals( $expected, $this->linkify_text( 'coffee2code' ) );
-		$this->assertEquals( $expected, $this->linkify_text( 'Coffee2code' ) );
-		$this->assertEquals( $expected, $this->linkify_text( 'COFFEE2CODE' ) );
+		$this->assertEquals( $this->expected_link( $string, self::$text_to_link[ $string ] ), $this->linkify_text( $string ) );
+	}
+
+	/**
+	 * Ensure a more specific string matches with priority over a less specific
+	 * string, regardless of what order they were defined.
+	 *
+	 *  MAYBE! Not sure if this is desired. But the theory is if both
+	 * "test" and "test place" are defined, then the text "test place" should get
+	 * linked, even though "test" was defined first.
+	 */
+	function test_does_not_linkify_a_more_general_term_when_general_is_first() {
+		$expected = $this->expected_link( 'test place', 'http://example.com/test2' );
+
+		$this->assertEquals( "This $expected is true", $this->linkify_text( 'This test place is true' ) );
 	}
 
 	function test_linkifies_text_with_special_character() {
