@@ -24,12 +24,12 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		'example.com'    => 'http://example.com',
 	);
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 		$this->set_option();
 	}
 
-	function tearDown() {
+	public function tearDown() {
 		parent::tearDown();
 
 		// Reset options
@@ -82,7 +82,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 
 
 
-	function set_option( $settings = array() ) {
+	protected function set_option( $settings = array() ) {
 		$defaults = array(
 			'text_to_link' => self::$text_to_link,
 		);
@@ -90,11 +90,11 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		c2c_LinkifyText::get_instance()->update_option( $settings, true );
 	}
 
-	function linkify_text( $text ) {
+	protected function linkify_text( $text ) {
 		return c2c_LinkifyText::get_instance()->linkify_text( $text );
 	}
 
-	function expected_link( $text, $link = '' ) {
+	protected function expected_link( $text, $link = '' ) {
 		if ( ! $link && isset( self::$text_to_link[ $text ] ) ) {
 			$link = self::$text_to_link[ $text ];
 		}
@@ -102,19 +102,19 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		return '<a href="' . $link . '">' . $text . '</a>';
 	}
 
-	function add_text_to_linkify( $text_to_link ) {
+	public function add_text_to_linkify( $text_to_link ) {
 		$text_to_link = (array) $text_to_link;
 		$text_to_link['bbPress'] = 'https://bbpress.org';
 		return $text_to_link;
 	}
 
-	function add_custom_filter( $filters ) {
+	public function add_custom_filter( $filters ) {
 		$filters[] = 'custom_filter';
 		return $filters;
 	}
 
 	// Taken from example in readme.txt.
-	function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $link_for_text  ) {
+	public function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $link_for_text  ) {
 		// The string that you chose to separate the link URL and the title attribute text.
 		$separator = ' || ';
 
@@ -140,27 +140,27 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 
 
 
-	function test_class_exists() {
+	public function test_class_exists() {
 		$this->assertTrue( class_exists( 'c2c_LinkifyText' ) );
 	}
 
-	function test_plugin_framework_class_name() {
+	public function test_plugin_framework_class_name() {
 		$this->assertTrue( class_exists( 'c2c_LinkifyText_Plugin_042' ) );
 	}
 
-	function test_plugin_framework_version() {
+	public function test_plugin_framework_version() {
 		$this->assertEquals( '042', c2c_LinkifyText::get_instance()->c2c_plugin_version() );
 	}
 
-	function test_get_version() {
+	public function test_get_version() {
 		$this->assertEquals( '1.7', c2c_LinkifyText::get_instance()->version() );
 	}
 
-	function test_instance_object_is_returned() {
+	public function test_instance_object_is_returned() {
 		$this->assertTrue( is_a( c2c_LinkifyText::get_instance(), 'c2c_LinkifyText' ) );
 	}
 
-	function test_linkifies_text() {
+	public function test_linkifies_text() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 
 		$this->assertEquals( $expected, $this->linkify_text( 'coffee2code' ) );
@@ -171,37 +171,37 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $this->expected_link( 'Matt Mullenweg', 'https://ma.tt' ), $this->linkify_text( 'Matt Mullenweg' ) );
 	}
 
-	function test_linkifies_text_with_ampersand() {
+	public function test_linkifies_text_with_ampersand() {
 		$this->assertEquals( $this->expected_link( 'AT&T', self::$text_to_link[ 'AT&T' ] ), $this->linkify_text( 'AT&T' ) );
 	}
 
-	function test_linkifies_text_with_html_encoded_amp_ampersand() {
+	public function test_linkifies_text_with_html_encoded_amp_ampersand() {
 		$this->assertEquals( $this->expected_link( 'AT&amp;T', self::$text_to_link[ 'AT&T' ] ), $this->linkify_text( 'AT&amp;T' ) );
 	}
 
-	function test_linkifies_text_with_html_encoded_038_ampersand() {
+	public function test_linkifies_text_with_html_encoded_038_ampersand() {
 		$this->assertEquals( $this->expected_link( 'AT&#038;T', self::$text_to_link[ 'AT&T' ] ), $this->linkify_text( 'AT&#038;T' ) );
 	}
 
-	function test_linkifies_multibyte_text() {
+	public function test_linkifies_multibyte_text() {
 		$mb_string = '漢字はユニコード';
 
 		$this->assertEquals( $this->expected_link( $mb_string, self::$text_to_link[ $mb_string ] ), $this->linkify_text( $mb_string ) );
 	}
 
-	function test_linkifies_single_term_multiple_times() {
+	public function test_linkifies_single_term_multiple_times() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 
 		$this->assertEquals( "$expected $expected $expected", $this->linkify_text( 'coffee2code coffee2code coffee2code' ) );
 	}
 
-	function test_linkifies_content_of_non_link_tags() {
+	public function test_linkifies_content_of_non_link_tags() {
 		$expected = '<strong><a href="http://coffee2code.com">coffee2code</a></strong>';
 
 		$this->assertEquals( $expected, $this->linkify_text( '<strong>coffee2code</strong>' ) );
 	}
 
-	function test_does_not_linkify_substrings() {
+	public function test_does_not_linkify_substrings() {
 		$expected = array(
 			'xcoffee2code',
 			'ycoffee2codey',
@@ -214,13 +214,13 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		}
 	}
 
-	function test_does_not_link_within_links() {
+	public function test_does_not_link_within_links() {
 		$expected = '<a href="http://coffee2code.com">coffee2code</a>';
 
 		$this->assertEquals( $expected, $this->linkify_text( $expected ) );
 	}
 
-	function test_does_not_link_within_html_tags() {
+	public function test_does_not_link_within_html_tags() {
 		$expected = array(
 			'<coffee2code>sample string</coffee2code>',
 			'<div class="coffee2code">sample string</div>',
@@ -233,7 +233,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		}
 	}
 
-	function test_does_not_link_within_shortcode_tags() {
+	public function test_does_not_link_within_shortcode_tags() {
 		$expected = array(
 			'[code user="coffee2code"]some text[/code]',
 			'[code user="a coffee2code test"]some text[/code]',
@@ -245,35 +245,35 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		}
 	}
 
-	function test_linkifies_within_shortcode_content() {
+	public function test_linkifies_within_shortcode_content() {
 		$this->assertEquals(
 			'[code user="ok"]aaa ' . $this->linkify_text( 'coffee2code' ) . ' bbb[/code]',
 			$this->linkify_text( '[code user="ok"]aaa coffee2code bbb[/code]' )
 		);
 	}
 
-	function test_linkifies_within_shortcode_content_adjacent_to_shortcode_tags() {
+	public function test_linkifies_within_shortcode_content_adjacent_to_shortcode_tags() {
 		$this->assertEquals(
 			'[code user="ok"]' . $this->linkify_text( 'coffee2code' ) . '[/code]',
 			$this->linkify_text( '[code user="ok"]coffee2code[/code]' )
 		);
 	}
 
-	function test_linkifies_outside_preceeding_shortcode() {
+	public function test_linkifies_outside_preceeding_shortcode() {
 		$this->assertEquals(
 			'[code user="ok"]eee[/code] a ' . $this->linkify_text( 'coffee2code' ),
 			$this->linkify_text( '[code user="ok"]eee[/code] a coffee2code' )
 		);
 	}
 
-	function test_linkifies_outside_subsequent_shortcode() {
+	public function test_linkifies_outside_subsequent_shortcode() {
 		$this->assertEquals(
 			'a ' . $this->expected_link( 'coffee2code' ) . ' [code user="ok"]eee[/code]',
 			$this->linkify_text( 'a coffee2code [code user="ok"]eee[/code]' )
 		);
 	}
 
-	function test_empty_link_does_not_linkify_text() {
+	public function test_empty_link_does_not_linkify_text() {
 		$this->assertEquals( 'blank', $this->linkify_text( 'blank' ) );
 	}
 
@@ -281,7 +281,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	 * With 'Apple iPhone 6' followed by 'iPhone 6' as link defines, the string
 	 * 'Apple iPhone 6' should not have the 'iPhone 6' linkifcation applied to it.
 	 */
-	function test_does_not_linkify_a_general_term_that_is_included_in_earlier_listed_term() {
+	public function test_does_not_linkify_a_general_term_that_is_included_in_earlier_listed_term() {
 		$string = 'Apple iPhone 6';
 
 		$this->assertEquals( $this->expected_link( $string, self::$text_to_link[ $string ] ), $this->linkify_text( $string ) );
@@ -295,13 +295,13 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	 * "test" and "test place" are defined, then the text "test place" should get
 	 * linked, even though "test" was defined first.
 	 */
-	function test_does_not_linkify_a_more_general_term_when_general_is_first() {
+	public function test_does_not_linkify_a_more_general_term_when_general_is_first() {
 		$expected = $this->expected_link( 'test place', 'http://example.com/test2' );
 
 		$this->assertEquals( "This $expected is true", $this->linkify_text( 'This test place is true' ) );
 	}
 
-	function test_linkifies_text_with_special_character() {
+	public function test_linkifies_text_with_special_character() {
 		$expected = $this->expected_link( 'Cocktail glacé', 'http://www.domain.com/cocktail-glace.html' );
 
 		$this->assertEquals( $expected, $this->linkify_text( 'Cocktail glacé' ) );
@@ -312,7 +312,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	//
 	// Ideally this test should fail with only one replacement performed at which
 	// time this test can be changed.
-	function test_linkifies_text_with_special_character_multiple_times_despite_a_limit() {
+	public function test_linkifies_text_with_special_character_multiple_times_despite_a_limit() {
 		$expected = $this->expected_link( 'Cocktail glacé', 'http://www.domain.com/cocktail-glace.html' );
 
 		$this->set_option( array( 'replace_once' => true ) );
@@ -320,26 +320,26 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected $expected $expected", $this->linkify_text( 'Cocktail glacé Cocktail glacé Cocktail glacé' ) );
 	}
 
-	function test_linkifies_text_via_term_referencing() {
+	public function test_linkifies_text_via_term_referencing() {
 		$this->assertEquals( $this->expected_link( 'Scott Reilly', 'http://coffee2code.com' ), $this->linkify_text( 'Scott Reilly' ) );
 		$this->assertEquals( $this->expected_link( 'c2c', 'http://coffee2code.com' ), $this->linkify_text( 'c2c' ) );
 	}
 
-	function test_does_not_linkify_text_via_referencing_nonexistent_term() {
+	public function test_does_not_linkify_text_via_referencing_nonexistent_term() {
 		$this->assertEquals( 'ref dne', $this->linkify_text( 'ref dne' ) );
 	}
 
 	// NOTE: This could eventually be supported, though circular referencing should be accounted for.
-	function test_does_not_linkify_text_via_referencing_another_term() {
+	public function test_does_not_linkify_text_via_referencing_another_term() {
 		$this->assertEquals( 'me', $this->linkify_text( 'me' ) );
 	}
 
 	// NOTE: Not trying to be too sophisticted here.
-	function test_does_not_linkify_text_if_link_does_not_look_like_link() {
+	public function test_does_not_linkify_text_if_link_does_not_look_like_link() {
 		$this->assertEquals( 'not a link', $this->linkify_text( 'not a link' ) );
 	}
 
-	function test_linkifies_once_via_setting() {
+	public function test_linkifies_once_via_setting() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 		$this->test_linkifies_single_term_multiple_times();
 		$this->set_option( array( 'replace_once' => true ) );
@@ -347,7 +347,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected coffee2code coffee2code", $this->linkify_text( 'coffee2code coffee2code coffee2code' ) );
 	}
 
-	function test_linkifies_once_via_trueish_setting_value() {
+	public function test_linkifies_once_via_trueish_setting_value() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 		$this->test_linkifies_single_term_multiple_times();
 		$this->set_option( array( 'replace_once' => '1' ) );
@@ -355,7 +355,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected coffee2code coffee2code", $this->linkify_text( 'coffee2code coffee2code coffee2code' ) );
 	}
 
-	function test_linkifies_once_via_filter() {
+	public function test_linkifies_once_via_filter() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 		$this->test_linkifies_single_term_multiple_times();
 		add_filter( 'c2c_linkify_text_replace_once', '__return_true' );
@@ -363,7 +363,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( "$expected coffee2code coffee2code", $this->linkify_text( 'coffee2code coffee2code coffee2code' ) );
 	}
 
-	function test_linkifies_with_case_sensitivity_via_setting() {
+	public function test_linkifies_with_case_sensitivity_via_setting() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 		$this->test_linkifies_with_case_insensitivity();
 		$this->set_option( array( 'case_sensitive' => true ) );
@@ -373,7 +373,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'COFFEE2CODE', $this->linkify_text( 'COFFEE2CODE' ) );
 	}
 
-	function test_linkifies_with_case_sensitivity_via_filter() {
+	public function test_linkifies_with_case_sensitivity_via_filter() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 		$this->test_linkifies_with_case_insensitivity();
 		add_filter( 'c2c_linkify_text_case_sensitive', '__return_true' );
@@ -383,14 +383,14 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'COFFEE2CODE', $this->linkify_text( 'COFFEE2CODE' ) );
 	}
 
-	function test_linkifies_with_case_insensitivity() {
+	public function test_linkifies_with_case_insensitivity() {
 		// Note: This is also implicitly testing that case of the original text is preserved.
 		$this->assertEquals( $this->expected_link( 'coffee2code', 'http://coffee2code.com' ), $this->linkify_text( 'coffee2code' ) );
 		$this->assertEquals( $this->expected_link( 'Coffee2code', 'http://coffee2code.com' ), $this->linkify_text( 'Coffee2code' ) );
 		$this->assertEquals( $this->expected_link( 'COFFEE2CODE', 'http://coffee2code.com' ), $this->linkify_text( 'COFFEE2CODE' ) );
 	}
 
-	function test_linkifies_term_added_via_filter() {
+	public function test_linkifies_term_added_via_filter() {
 		$this->assertEquals( 'bbPress', $this->linkify_text( 'bbPress' ) );
 		$expected = $this->expected_link( 'bbPress', 'https://bbpress.org' );
 		add_filter( 'c2c_linkify_text', array( $this, 'add_text_to_linkify' ) );
@@ -398,19 +398,19 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, $this->linkify_text( 'bbPress' ) );
 	}
 
-	function test_linkification_prepends_protocol_if_missing_and_not_root_relative() {
+	public function test_linkification_prepends_protocol_if_missing_and_not_root_relative() {
 		$expected = $this->expected_link( 'BuddyPress', 'http://buddypress.org' );
 
 		$this->assertEquals( $expected, $this->linkify_text( 'BuddyPress' ) );
 	}
 
-	function test_linkification_accepts_root_relative_link() {
+	public function test_linkification_accepts_root_relative_link() {
 		$expected = $this->expected_link( 'my posts', '/authors/scott' );
 
 		$this->assertEquals( $expected, $this->linkify_text( 'my posts' ) );
 	}
 
-	function test_linkification_accepts_root_relative_file() {
+	public function test_linkification_accepts_root_relative_file() {
 		$text = 'my readme';
 		$expected = $this->expected_link( $text, 'http://' . self::$text_to_link[ $text ] );
 
@@ -420,7 +420,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	/**
 	 * @dataProvider get_default_filters
 	 */
-	function test_linkification_applies_to_default_filters( $filter ) {
+	public function test_linkification_applies_to_default_filters( $filter ) {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 
 		$this->assertNotFalse( has_filter( $filter, array( c2c_LinkifyText::get_instance(), 'linkify_text' ), 2 ) );
@@ -430,14 +430,14 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	/**
 	 * @dataProvider get_comment_filters
 	 */
-	function test_linkification_does_not_apply_to_comments_by_default( $filter ) {
+	public function test_linkification_does_not_apply_to_comments_by_default( $filter ) {
 		$this->assertEquals( 'coffee2code', apply_filters( $filter, 'coffee2code' ) );
 	}
 
 	/**
 	 * @dataProvider get_comment_filters
 	 */
-	function test_linkification_applies_to_comment_filters_when_enabled( $filter ) {
+	public function test_linkification_applies_to_comment_filters_when_enabled( $filter ) {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 
 		add_filter( 'c2c_linkify_text_comments', '__return_true' );
@@ -449,7 +449,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	/**
 	 * @dataProvider get_comment_filters
 	 */
-	function test_linkification_applies_to_comments_via_setting( $filter ) {
+	public function test_linkification_applies_to_comments_via_setting( $filter ) {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 		$this->test_linkification_does_not_apply_to_comments_by_default( $filter );
 		$this->set_option( array( 'linkify_text_comments' => true ) );
@@ -460,7 +460,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	/**
 	 * @dataProvider get_comment_filters
 	 */
-	function test_linkification_applies_to_comments_via_filter( $filter ) {
+	public function test_linkification_applies_to_comments_via_filter( $filter ) {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 		$this->test_linkification_does_not_apply_to_comments_by_default( $filter );
 		add_filter( 'c2c_linkify_text_comments', '__return_true' );
@@ -468,7 +468,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, apply_filters( $filter, 'coffee2code' ) );
 	}
 
-	function test_linkification_applies_to_custom_filter_via_filter() {
+	public function test_linkification_applies_to_custom_filter_via_filter() {
 		$this->assertEquals( 'coffee2code', apply_filters( 'custom_filter', 'coffee2code' ) );
 
 		add_filter( 'c2c_linkify_text_filters', array( $this, 'add_custom_filter' ) );
@@ -479,7 +479,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 	// NOTE: This is a test of an example given in the readme.
-	function test_defining_custom_link_markup_via_filter() {
+	public function test_defining_custom_link_markup_via_filter() {
 		// Redine text_to_link to add title attribute text after the link in the link text.
 		$this->set_option( array( 'text_to_link' => array( 'coffee2code' => 'http://coffee2code.com || Scott Reilly' ) ) );
 		// Add custom handler via filter.
