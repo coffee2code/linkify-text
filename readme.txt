@@ -245,6 +245,7 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 * Change: Note compatibility through WP 4.5+.
 * Change: Remove support for versions of WordPress older than 4.1.
 * Change: Update copyright date (2016).
+* Change: Prevent direct invocation of test file.
 * Change: Prevent web invocation of unit test bootstrap.php.
 * New: Create empty index.php to prevent files from being listed if web server has enabled directory listings.
 * New: Add LICENSE file.

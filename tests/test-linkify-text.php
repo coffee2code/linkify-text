@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) or die();
+
 class Linkify_Text_Test extends WP_UnitTestCase {
 
 	protected static $text_to_link = array(
