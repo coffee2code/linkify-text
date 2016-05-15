@@ -105,7 +105,7 @@ WP => https://wordpress.org || This is the link title
 Now the code:
 
 `
-function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $link_for_text  ) {
+function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $link_for_text, $text_to_link ) {
 	// The string that you chose to separate the link URL and the title attribute text.
 	$separator = ' || ';
 
@@ -120,7 +120,7 @@ function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $l
 
 	return $display_link;
 }
-add_filter( 'c2c_linkify_text_linked_text', 'add_title_attribute_to_linkified_text', 10, 3 );
+add_filter( 'c2c_linkify_text_linked_text', 'add_title_attribute_to_linkified_text', 10, 4 );
 `
 
 = Does this plugin include unit tests? =
@@ -228,6 +228,7 @@ Arguments:
 * $new_text (string): The link markup that will replace $old_text.
 * $old_text (string): The text being replaced/linkified.
 * $link (string): The URL that $old_text is to be linked to.
+* $text_to_link (array): The full array of text and the URLs they should link to.
 
 Example:
 
@@ -239,6 +240,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 = 1.8 () =
 * New: Ensure longer, more precise link strings match before shorter strings that might also match, regardless of order defined.
 * New: Linkify text within shortcode content, but not within the shortcode tags themselves.
+* New: Add $text_to_link as additional optional argument to 'c2c_linkify_text_linked_text' filter.
 * Bugfix: Fix being able to limit text replacements to just once a post.
 * Bugfix: Preserve capitalization of source string being linkified. Fixes case-sensitive matches where the source string is differently cased than defined in setting.
 * Change: Update plugin framework to 042:
