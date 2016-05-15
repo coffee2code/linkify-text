@@ -135,7 +135,7 @@ Yes.
 
 == Filters ==
 
-The plugin exposes five filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
+The plugin exposes six filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
 
 = c2c_linkify_text_filters (filter) =
 
@@ -219,6 +219,20 @@ Example:
 `// Only linkify a term once per post.
 add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 
+= c2c_linkify_text_linked_text (filter) =
+
+The 'c2c_linkify_text_linked_text' hook allows you to customize or override the replacement link markup for a given string.
+
+Arguments:
+
+* $new_text (string): The link markup that will replace $old_text.
+* $old_text (string): The text being replaced/linkified.
+* $link (string): The URL that $old_text is to be linked to.
+
+Example:
+
+See the "Can I change how the link gets created because I want to add a 'title' attribute to the link?" in the FAQ.
+
 
 == Changelog ==
 
@@ -247,6 +261,7 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 * Change: Update copyright date (2016).
 * Change: Prevent direct invocation of test file.
 * Change: Prevent web invocation of unit test bootstrap.php.
+* New: Document 'c2c_linkify_text_linked_text' filter in readme.
 * New: Create empty index.php to prevent files from being listed if web server has enabled directory listings.
 * New: Add LICENSE file.
 
