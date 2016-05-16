@@ -214,7 +214,7 @@ dotorg => :WP
 
 		$can_do_mb = function_exists( 'mb_regex_encoding' ) && function_exists( 'mb_ereg_replace' ) && function_exists( 'mb_strlen' );
 
-		if ( ! empty( $text_to_link ) ) {
+		if ( $text_to_link ) {
 
 			// Store original mb_regex_encoding and then set it to UTF-8.
 			if ( $can_do_mb ) {
@@ -239,7 +239,7 @@ dotorg => :WP
 				}
 
 				// If link is empty, or is another term reference, don't linkify.
-				if ( empty( $link ) || ':' === $link[0] ) {
+				if ( ! $link || ':' === $link[0] ) {
 					continue;
 				}
 
