@@ -206,7 +206,7 @@ dotorg => :WP
 		$options         = $this->get_options();
 		$text_to_link    = apply_filters( 'c2c_linkify_text',                $options['text_to_link'] );
 		$case_sensitive  = apply_filters( 'c2c_linkify_text_case_sensitive', (bool) $options['case_sensitive'] );
-		$limit           = apply_filters( 'c2c_linkify_text_replace_once',   (bool) $options['replace_once'] ) === true ? '1' : '-1';
+		$limit           = apply_filters( 'c2c_linkify_text_replace_once',   (bool) $options['replace_once'] ) === true ? 1 : -1;
 		$preg_flags      = $case_sensitive ? 's' : 'si';
 		$mb_regex_encoding = null;
 
@@ -271,8 +271,20 @@ dotorg => :WP
 				// If the text to be replaced has multibyte character(s), use
 				// mb_ereg_replace() if possible.
 				if ( $can_do_mb && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
-					// NOTE: mb_ereg_replace() does not support limiting the number of replacements.
-					$text = mb_ereg_replace( $regex, $new_text, $text, $preg_flags );
+					// NOTE: mb_ereg_replace() does not support limiting the number of
+					// replacements, hence the different handling if replacing once.
+					if ( 1 === $limit ) {
+						// Find first occurrence of the search string.
+						$pos = mb_strpos( $text, $old_text );
+						// Only do the replacement if the search string was found.
+						if ( false !== $pos ) {
+							$text  = mb_substr( $text, 0, $pos )
+								. sprintf( str_replace( "\\1", '%s', $new_text ), $old_text )
+								. mb_substr( $text, $pos + mb_strlen( $old_text ) );
+						}
+					} else {
+						$text = mb_ereg_replace( $regex, $new_text, $text, $preg_flags );
+					}
 				} else {
 					$text = preg_replace( "~{$regex}~{$preg_flags}", $new_text, $text, $limit );
 				}

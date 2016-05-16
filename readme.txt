@@ -242,6 +242,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 * New: Linkify text within shortcode content, but not within the shortcode tags themselves.
 * New: Add $text_to_link as additional optional argument to 'c2c_linkify_text_linked_text' filter.
 * Bugfix: Fix being able to limit text replacements to just once a post.
+* Bugfix: Honor setting to limit text replacements to just once a post for multibyte strings.
 * Bugfix: Preserve capitalization of source string being linkified. Fixes case-sensitive matches where the source string is differently cased than defined in setting.
 * Change: Update plugin framework to 042:
     * Change class name to c2c_LinkifyText_Plugin_042 to be plugin-specific.

@@ -303,17 +303,12 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $expected, $this->linkify_text( 'Cocktail glacé' ) );
 	}
 
-	// This affirms a limitation: mb_ereg_replace() (as used for search strings
-	// with multibyte characters) does't support limiting number of replacements.
-	//
-	// Ideally this test should fail with only one replacement performed at which
-	// time this test can be changed.
-	public function test_linkifies_text_with_special_character_multiple_times_despite_a_limit() {
+	public function test_linkifies_multibyte_text_once_via_setting() {
 		$expected = $this->expected_link( 'Cocktail glacé', 'http://www.domain.com/cocktail-glace.html' );
 
 		$this->set_option( array( 'replace_once' => true ) );
 
-		$this->assertEquals( "$expected $expected $expected", $this->linkify_text( 'Cocktail glacé Cocktail glacé Cocktail glacé' ) );
+		$this->assertEquals( "$expected Cocktail glacé Cocktail glacé", $this->linkify_text( 'Cocktail glacé Cocktail glacé Cocktail glacé' ) );
 	}
 
 	public function test_linkifies_text_via_term_referencing() {
