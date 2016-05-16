@@ -110,28 +110,40 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_042 {
 		$this->menu_name = __( 'Linkify Text', 'linkify-text' );
 
 		$this->config = array(
-			'text_to_link' => array( 'input' => 'inline_textarea', 'datatype' => 'hash', 'default' => array(
-					"WordPress"   => "https://wordpress.org",
-					"coffee2code" => "http://coffee2code.com"
+			'text_to_link' => array(
+				'input'            => 'inline_textarea',
+				'datatype'         => 'hash',
+				'default'          => array(
+					"WordPress"    => "https://wordpress.org",
+					"coffee2code"  => "http://coffee2code.com"
 				),
-				'allow_html' => true, 'no_wrap' => true, 'input_attributes' => 'rows="15" cols="40"',
-				'label' => __( 'Text and Links', 'linkify-text' ),
-				'help'  => __( 'Define only one text and associated link per line, and don\'t span lines.', 'linkify-text' ) . '<br />' .
-						   __( 'Use a colon-prefixed term instead of a link to point to that term\'s link, e.g. <code>WP => :WordPress</code> will use the same link defined for WordPress', 'linkify-text' ),
+				'allow_html'       => true,
+				'no_wrap'          => true,
+				'input_attributes' => 'rows="15" cols="40"',
+				'label'            => __( 'Text and Links', 'linkify-text' ),
+				'help'             => __( 'Define only one text and associated link per line, and don\'t span lines.', 'linkify-text' )
+					. '<br />'
+					. __( 'Use a colon-prefixed term instead of a link to point to that term\'s link, e.g. <code>WP => :WordPress</code> will use the same link defined for WordPress', 'linkify-text' ),
 			),
-			'linkify_text_comments' => array( 'input' => 'checkbox', 'default' => false,
-				'label' => __( 'Enable text linkification in comments?', 'linkify-text' ),
-				'help'  => '',
+			'linkify_text_comments' => array(
+				'input'            => 'checkbox',
+				'default'          => false,
+				'label'            => __( 'Enable text linkification in comments?', 'linkify-text' ),
 			),
-			'replace_once' => array( 'input' => 'checkbox', 'default' => false,
-				'label' => __( 'Limit linkifications to once per term per post?', 'linkify-text' ),
-				'help'  => __( 'If checked, then each term will only be linkified the first time it appears in a post.', 'linkify-text' ),
+			'replace_once' => array(
+				'input'            => 'checkbox',
+				'default'          => false,
+				'label'            => __( 'Limit linkifications to once per term per post?', 'linkify-text' ),
+				'help'             => __( 'If checked, then each term will only be linkified the first time it appears in a post.', 'linkify-text' ),
 			),
-			'case_sensitive' => array( 'input' => 'checkbox', 'default' => false,
-				'label' => __( 'Case sensitive text matching?', 'linkify-text' ),
-				'help'  => __( 'If checked, then linkification of WordPress would also affect wordpress.', 'linkify-text' ) . ' ' .
-						   __( 'NOTE: If the text to be linked contains multibyte characters, this setting is not honored.', 'linkify-text' ),
-			)
+			'case_sensitive' => array(
+				'input'            => 'checkbox',
+				'default'          => false,
+				'label'            => __( 'Case sensitive text matching?', 'linkify-text' ),
+				'help'             => __( 'If checked, then linkification of WordPress would also affect wordpress.', 'linkify-text' )
+					. ' '
+					. __( 'NOTE: If the text to be linked contains multibyte characters, this setting is not honored.', 'linkify-text' ),
+			),
 		);
 	}
 

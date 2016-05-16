@@ -259,6 +259,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 * Change: Add more unit tests.
 * Change: Explicitly declare methods in unit tests as public or protected.
 * Change: Discontinue unnecessary use of `empty()`.
+* Change: Minor code reformatting (spacing).
 * Change: Minor documentation tweaks.
 * Change: Note compatibility through WP 4.5+.
 * Change: Remove support for versions of WordPress older than 4.1.
