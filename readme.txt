@@ -148,12 +148,16 @@ Arguments:
 Example:
 
 `
-// Enable text linkification for custom fields
-add_filter( 'c2c_linkify_text_filters', 'more_text_replacements' );
+/**
+ * Enables text linkification for custom fields.
+ *
+ * @param array $filters The filters handled by the Linkify Text plugin.
+ */
 function more_text_replacements( $filters ) {
 	$filters[] = 'the_meta'; // Here you could put in the name of any filter you want
 	return $filters;
 }
+add_filter( 'c2c_linkify_text_filters', 'more_text_replacements' );
 `
 
 = c2c_linkify_text_comments (filter) =
@@ -180,17 +184,24 @@ Arguments:
 Example:
 
 `
-// Add more text to be linked
-add_filter( 'c2c_linkify_text', 'my_text_linkifications' );
-function my_text_linkifications( $replacements ) {
+/**
+ * Programmatically adds more text to be linked.
+ *
+ * @param array $text_to_links Array of text and their associated URLs.
+ */
+function my_text_linkifications( $text_to_links ) {
 	// Add text link
-	$replacements['Matt Mullenweg'] => 'https://ma.tt';
+	$text_to_links['Matt Mullenweg'] => 'https://ma.tt';
+
 	// Unset a text link that we never want defined
-	if ( isset( $replacements['WordPress'] ) )
-		unset( $replacements['WordPress'] );
-	// Important!
-	return $replacements;
+	if ( isset( $text_to_links['WordPress'] ) ) {
+		unset( $text_to_links['WordPress'] );
+	}
+
+	// Important! Return the changes.
+	return $text_to_links;
 }
+add_filter( 'c2c_linkify_text', 'my_text_linkifications' );
 `
 
 = c2c_linkify_text_case_sensitive (filter) =
