@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.1
 Tested up to: 4.5
-Stable tag: 1.7
+Stable tag: 1.8
 
 Automatically hyperlink words or phrases in your posts.
 
@@ -248,7 +248,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 
 == Changelog ==
 
-= 1.8 () =
+= 1.8 (2016-05-16) =
 * New: Ensure longer, more precise link strings match before shorter strings that might also match, regardless of order defined.
 * New: Linkify text within shortcode content, but not within the shortcode tags themselves.
 * New: Add $text_to_link as additional optional argument to 'c2c_linkify_text_linked_text' filter.
@@ -346,6 +346,9 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 
 
 == Upgrade Notice ==
+
+= 1.8 =
+Recommended update: fixed to honor 'replace once' setting, including for multibyte strings; preserved capitalization of linkified text; matched longer strings before shorter strings; added support for language packs; compatibility is now WP 4.1-4.5+
 
 = 1.7 =
 Enhancement update: improved support for '&' in text to be linkified; no longer create a link when the link look anything like a URL or filename; minor refactoring; added more unit tests

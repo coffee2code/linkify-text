@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Linkify Text
- * Version:     1.7
+ * Version:     1.8
  * Plugin URI:  http://coffee2code.com/wp-plugins/linkify-text/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
@@ -29,7 +29,7 @@
  *
  * @package Linkify_Text
  * @author  Scott Reilly
- * @version 1.7
+ * @version 1.8
  */
 
 /*
@@ -82,7 +82,7 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_042 {
 	 * Constructor.
 	 */
 	protected function __construct() {
-		parent::__construct( '1.7', 'linkify-text', 'c2c', __FILE__, array() );
+		parent::__construct( '1.8', 'linkify-text', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;
