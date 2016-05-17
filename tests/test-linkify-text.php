@@ -482,4 +482,15 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_uninstall_deletes_option() {
+		$option = 'c2c_linkify_text';
+		c2c_LinkifyText::get_instance()->get_options();
+
+		$this->assertNotFalse( get_option( $option ) );
+
+		c2c_LinkifyText::uninstall();
+
+		$this->assertFalse( get_option( $option ) );
+	}
+
 }
