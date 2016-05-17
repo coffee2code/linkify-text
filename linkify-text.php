@@ -181,8 +181,6 @@ dotorg => :WP
 		echo '<p>' . __( 'NOTE: A referenced term must have a link; it cannot be a reference to another term.', 'linkify-text' ) . '</p>';
 		echo '<p>' . __( 'Other considerations:', 'linkify-text' ) . '</p>';
 		echo '<ul class="c2c-plugin-list"><li>';
-		echo __( 'List the more specific matches early to avoid stomping on another of your links. For example, if you have both <code>WordPress</code> and <code>WordPress Support Forums</code> as text to be linked, put <code>WordPress Support Forums</code> first; otherwise, the <code>WordPress</code> entry will match first, preventing the phrase <code>WordPress Support Forums</code> from ever being found.', 'linkify-text' );
-		echo '</li><li>';
 		echo __( 'Text must represent a whole word or phrase, not a partial string.', 'linkify-text' );
 		echo '</li><li>';
 		echo __( 'If the protocol is not specified, then \'http://\' is assumed.', 'linkify-text' );
