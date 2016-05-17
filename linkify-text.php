@@ -161,9 +161,9 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_042 {
 	}
 
 	/**
-	 * Outputs the text above the setting form
+	 * Outputs the text above the setting form.
 	 *
-	 * @param string $localized_heading_text (optional) Localized page heading text.
+	 * @param string $localized_heading_text Optional. Localized page heading text.
 	 */
 	public function options_page_description( $localized_heading_text = '' ) {
 		parent::options_page_description( __( 'Linkify Text Settings', 'linkify-text' ) );
@@ -192,14 +192,16 @@ dotorg => :WP
 	/**
 	 * Linkifies comment text if enabled.
 	 *
+	 * Note that the priority when hooking this function as a callback on a filter
+	 * must be set high enough to avoid links inserted by the plugin from getting
+	 * omitted as a result of any link stripping that may be performed.
+	 *
 	 * @since 1.5
 	 *
-	 * @param string $text The comment text
+	 * @param  string $text The comment text.
 	 * @return string
 	 */
 	public function linkify_comment_text( $text ) {
-		// Note that the priority must be set high enough to avoid links inserted by the plugin from
-		// getting omitted as a result of any link stripping that may be performed.
 		$options = $this->get_options();
 		if ( apply_filters( 'c2c_linkify_text_comments', (bool) $options['linkify_text_comments'] ) ) {
 			$text = $this->linkify_text( $text );
@@ -211,8 +213,8 @@ dotorg => :WP
 	/**
 	 * Perform text linkification.
 	 *
-	 * @param string $text Text to be processed for text linkification
-	 * @return string Text with replacements already processed
+	 * @param  string $text Text to be processed for text linkification.
+	 * @return string Text with replacements already processed.
 	 */
 	public function linkify_text( $text ) {
 		$options         = $this->get_options();
@@ -278,6 +280,7 @@ dotorg => :WP
 					$old_text = str_replace( '&', '&(amp;|#038;)?', $old_text );
 				}
 
+				// Regex to find text to replace, but not when in HTML tags or shortcodes.
 				$regex = "(?![<\[].*)\b({$old_text})\b(?![^<>\[\]]*?[\]>])";
 
 				// If the text to be replaced has multibyte character(s), use
@@ -307,7 +310,7 @@ dotorg => :WP
 				mb_regex_encoding( $mb_regex_encoding );
 			}
 
-			// Remove links within links
+			// Remove links within links.
 			$text = preg_replace( "#(<a [^>]+>)(.*)<a [^>]+>([^<]*)</a>([^>]*)</a>#iU", "$1$2$3$4</a>" , $text );
 
 		}

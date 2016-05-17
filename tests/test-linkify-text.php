@@ -275,7 +275,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 
 	/*
 	 * With 'Apple iPhone 6' followed by 'iPhone 6' as link defines, the string
-	 * 'Apple iPhone 6' should not have the 'iPhone 6' linkifcation applied to it.
+	 * 'Apple iPhone 6' should not have the 'iPhone 6' linkification applied to it.
 	 */
 	public function test_does_not_linkify_a_general_term_that_is_included_in_earlier_listed_term() {
 		$string = 'Apple iPhone 6';
