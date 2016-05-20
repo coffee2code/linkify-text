@@ -255,8 +255,9 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 * Bugfix: Fix being able to limit text replacements to just once a post.
 * Bugfix: Honor setting to limit text replacements to just once a post for multibyte strings.
 * Bugfix: Preserve capitalization of source string being linkified. Fixes case-sensitive matches where the source string is differently cased than defined in setting.
-* Change: Update plugin framework to 042:
-    * Change class name to c2c_LinkifyText_Plugin_042 to be plugin-specific.
+* Change: Update plugin framework to 043:
+    * Change class name to c2c_LinkifyText_Plugin_043 to be plugin-specific.
+    * Disregard invalid lines supplied as part of a hash option value.
     * Set textdomain using a string instead of a variable.
     * Don't load textdomain from file.
     * Change admin page header from 'h2' to 'h1' tag.

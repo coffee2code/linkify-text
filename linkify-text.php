@@ -56,7 +56,7 @@ if ( ! class_exists( 'c2c_LinkifyText' ) ) :
 
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 
-final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_042 {
+final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_043 {
 
 	/**
 	 * The one true instance.
