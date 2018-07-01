@@ -137,7 +137,7 @@ Yes.
 
 The plugin exposes six filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
 
-= c2c_linkify_text_filters (filter) =
+**c2c_linkify_text_filters (filter)**
 
 The 'c2c_linkify_text_filters' hook allows you to customize what hooks get text linkification applied to them.
 
@@ -160,7 +160,7 @@ function more_text_replacements( $filters ) {
 add_filter( 'c2c_linkify_text_filters', 'more_text_replacements' );
 `
 
-= c2c_linkify_text_comments (filter) =
+**c2c_linkify_text_comments (filter)**
 
 The 'c2c_linkify_text_comments' hook allows you to customize or override the setting indicating if text linkification should be enabled in comments.
 
@@ -173,7 +173,7 @@ Example:
 `// Prevent text linkification from ever being enabled in comments.
 add_filter( 'c2c_linkify_text_comments', '__return_false' );`
 
-= c2c_linkify_text (filter) =
+**c2c_linkify_text (filter)**
 
 The 'c2c_linkify_text' hook allows you to customize or override the setting defining all of the text phrases and their associated links.
 
@@ -204,7 +204,7 @@ function my_text_linkifications( $text_to_links ) {
 add_filter( 'c2c_linkify_text', 'my_text_linkifications' );
 `
 
-= c2c_linkify_text_case_sensitive (filter) =
+**c2c_linkify_text_case_sensitive (filter)**
 
 The 'c2c_linkify_text_case_sensitive' hook allows you to customize or override the setting indicating if text matching for potential text linkification should be case sensitive or not.
 
@@ -217,7 +217,7 @@ Example:
 `// Prevent text matching from ever being case sensitive.
 add_filter( 'c2c_linkify_text_case_sensitive', '__return_false' );`
 
-= c2c_linkify_text_replace_once (filter) =
+**c2c_linkify_text_replace_once (filter)**
 
 The 'c2c_linkify_text_replace_once' hook allows you to customize or override the setting indicating if text linkification should be limited to once per term per piece of text being processed regardless of how many times the term appears.
 
@@ -230,7 +230,7 @@ Example:
 `// Only linkify a term once per post.
 add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 
-= c2c_linkify_text_linked_text (filter) =
+**c2c_linkify_text_linked_text (filter)**
 
 The 'c2c_linkify_text_linked_text' hook allows you to customize or override the replacement link markup for a given string.
 
@@ -253,6 +253,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
+* Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
 * Change: Update copyright date (2018)
 
 = 1.8 (2016-05-16) =
