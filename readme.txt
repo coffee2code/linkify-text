@@ -8,7 +8,7 @@ Requires at least: 4.7
 Tested up to: 4.9
 Stable tag: 1.8
 
-Automatically hyperlink words or phrases in your posts.
+Automatically add links to words or phrases in your posts.
 
 == Description ==
 
@@ -256,6 +256,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
     * New: Add header comments to bootstrap
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
+* Change: Tweak plugin description
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
 * Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
 * Change: Update installation instruction to prefer built-in installer over .zip file

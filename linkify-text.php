@@ -8,7 +8,7 @@
  * Text Domain: linkify-text
  * License:     GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * Description: Automatically hyperlink words or phrases in your posts.
+ * Description: Automatically add links to words or phrases in your posts.
  *
  * Compatible with WordPress 4.7 through 4.9+.
  *
