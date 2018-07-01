@@ -1,4 +1,9 @@
 <?php
+/**
+ * PHPUnit bootstrap file
+ *
+ * @package Linkify_Text
+ */
 
 $tests_dir = getenv( 'WP_TESTS_DIR' );
 

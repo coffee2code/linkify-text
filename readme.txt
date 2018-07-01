@@ -250,6 +250,8 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 
 = () =
 * New: Add GitHub link to readme
+* Unit tests:
+    * New: Add header comments to bootstrap
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
