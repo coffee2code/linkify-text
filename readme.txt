@@ -248,6 +248,9 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 
 == Changelog ==
 
+= () =
+* Change: Update copyright date (2018)
+
 = 1.8 (2016-05-16) =
 * New: Ensure longer, more precise link strings match before shorter strings that might also match, regardless of order defined.
 * New: Linkify text within shortcode content, but not within the shortcode tags themselves.
