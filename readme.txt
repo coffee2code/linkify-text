@@ -251,6 +251,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 = () =
 * New: Add GitHub link to readme
 * Unit tests:
+    * Change: Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
     * New: Add header comments to bootstrap
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
