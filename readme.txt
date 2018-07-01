@@ -22,7 +22,7 @@ Additional features of the plugin controlled via settings and filters:
 
 You can also link multiple terms to the same link and only define that link once in the settings via use of a special link syntax.
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/linkify-text/) | [Plugin Directory Page](https://wordpress.org/plugins/linkify-text/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/linkify-text/) | [Plugin Directory Page](https://wordpress.org/plugins/linkify-text/) | [GitHub](https://github.com/coffe2code/linkify-text/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
@@ -249,6 +249,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 == Changelog ==
 
 = () =
+* New: Add GitHub link to readme
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
 * Change: Update copyright date (2018)
