@@ -133,7 +133,7 @@ Yes.
 1. A screenshot of the admin options page for the plugin, where you define the text and their related links, as well as customize various settings.
 
 
-== Filters ==
+== Hooks ==
 
 The plugin exposes six filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
 
@@ -252,6 +252,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 * New: Add GitHub link to readme
 * Change: Note compatibility through WP 4.9+
 * Change: Drop compatibility with version of WP older than 4.7.
+* Change: Rename readme.txt section from 'Filters' to 'Hooks'
 * Change: Update copyright date (2018)
 
 = 1.8 (2016-05-16) =
