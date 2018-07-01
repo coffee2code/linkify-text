@@ -162,8 +162,8 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 	 * Override the plugin framework's register_filters() to actually hook actions and filters.
 	 */
 	public function register_filters() {
-		$filters = apply_filters( 'c2c_linkify_text_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
-		foreach ( (array) $filters as $filter ) {
+		$filters = (array) apply_filters( 'c2c_linkify_text_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
+		foreach ( $filters as $filter ) {
 			add_filter( $filter, array( $this, 'linkify_text' ), 2 );
 		}
 
@@ -212,7 +212,7 @@ dotorg => :WP
 	 */
 	public function linkify_comment_text( $text ) {
 		$options = $this->get_options();
-		if ( apply_filters( 'c2c_linkify_text_comments', (bool) $options['linkify_text_comments'] ) ) {
+		if ( (bool) apply_filters( 'c2c_linkify_text_comments', (bool) $options['linkify_text_comments'] ) ) {
 			$text = $this->linkify_text( $text );
 		}
 
@@ -227,9 +227,9 @@ dotorg => :WP
 	 */
 	public function linkify_text( $text ) {
 		$options         = $this->get_options();
-		$text_to_link    = apply_filters( 'c2c_linkify_text',                $options['text_to_link'] );
-		$case_sensitive  = apply_filters( 'c2c_linkify_text_case_sensitive', (bool) $options['case_sensitive'] );
-		$limit           = apply_filters( 'c2c_linkify_text_replace_once',   (bool) $options['replace_once'] ) === true ? 1 : -1;
+		$text_to_link    = apply_filters( 'c2c_linkify_text',                       $options['text_to_link'] );
+		$case_sensitive  = (bool) apply_filters( 'c2c_linkify_text_case_sensitive', (bool) $options['case_sensitive'] );
+		$limit           = (bool) apply_filters( 'c2c_linkify_text_replace_once',   (bool) $options['replace_once'] ) === true ? 1 : -1;
 		$preg_flags      = $case_sensitive ? 's' : 'si';
 		$mb_regex_encoding = null;
 
