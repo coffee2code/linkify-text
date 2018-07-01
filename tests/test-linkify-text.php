@@ -26,8 +26,13 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		'example.com'    => 'http://example.com',
 	);
 
+	public static function setUpBeforeClass() {
+		c2c_LinkifyText::get_instance()->install();
+	}
+
 	public function setUp() {
 		parent::setUp();
+		c2c_LinkifyText::get_instance()->reset_options();
 		$this->set_option();
 	}
 
@@ -35,7 +40,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		parent::tearDown();
 
 		// Reset options
-		$this->set_option();
+		c2c_LinkifyText::get_instance()->reset_options();
 
 		remove_filter( 'c2c_linkify_text',                array( $this, 'add_text_to_linkify' ) );
 		remove_filter( 'c2c_linkify_text_replace_once',   '__return_true' );
