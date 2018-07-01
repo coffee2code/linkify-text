@@ -16,6 +16,12 @@
  * =>> Also, visit the plugin's homepage for additional information and updates.
  * =>> Or visit: https://wordpress.org/plugins/linkify-text/
  *
+ * @package Linkify_Text
+ * @author  Scott Reilly
+ * @version 1.8
+ */
+
+/*
  * TODO
  * - Add class to link. Maybe add filter as well. (Q was asked about opening link in new window)
  * - Setting to open links in new window? (Forum request)
@@ -27,9 +33,6 @@
  *   which is explicitly handled). Are there others that should be handled?
  * - Inline documentation for hooks.
  *
- * @package Linkify_Text
- * @author  Scott Reilly
- * @version 1.8
  */
 
 /*
