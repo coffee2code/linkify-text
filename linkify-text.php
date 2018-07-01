@@ -62,6 +62,14 @@ require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'c2c-plugin.php' );
 final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 
 	/**
+	 * Name of plugin's setting.
+	 *
+	 * @since 1.9
+	 * @var string
+	 */
+	const SETTING_NAME = 'c2c_linkify_text';
+
+	/**
 	 * The one true instance.
 	 *
 	 * @var c2c_LinkifyText
@@ -102,7 +110,7 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 	 * Handles uninstallation tasks, such as deleting plugin options.
 	 */
 	public static function uninstall() {
-		delete_option( 'c2c_linkify_text' );
+		delete_option( self::SETTING_NAME );
 	}
 
 	/**
