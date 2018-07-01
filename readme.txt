@@ -27,7 +27,7 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/linkify-text/) | [Plu
 
 == Installation ==
 
-1. Unzip `linkify-text.zip` inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer)
+1. Install via the built-in WordPress plugin installer. Or download and unzip `linkify-text.zip` inside the plugins directory for your site (typically `wp-content/plugins/`)
 1. Activate the plugin through the 'Plugins' admin menu in WordPress
 1. (optional) Go to the `Settings` -> `Linkify Text` admin options page and define text and the URLs they should point to
 
@@ -258,6 +258,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
 * Change: Drop compatibility with version of WP older than 4.7.
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
 * Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
+* Change: Update installation instruction to prefer built-in installer over .zip file
 * Change: Update copyright date (2018)
 
 = 1.8 (2016-05-16) =
