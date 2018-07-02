@@ -243,7 +243,7 @@ Arguments:
 
 Example:
 
-See the "Can I change how the link gets created because I want to add a 'title' attribute to the link?" in the FAQ.
+See "Can I change how the link gets created because I want to add a 'title' attribute to the link?" in the FAQ.
 
 **c2c_linkify_text_link_attrs (filter)**
 
