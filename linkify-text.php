@@ -257,8 +257,11 @@ dotorg => :WP
 			foreach ( $text_to_link as $old_text => $link ) {
 				// If the link starts with a colon, treat it as a special shortcut to the
 				// link for the referenced term. Nested referencing is not supported.
-				if ( ':' === $link[0] ) {
-					$link = $text_to_link[ substr( $link, 1 ) ];
+				if ( $link && ':' === $link[0] ) {
+					$shortcut_to = substr( $link, 1 );
+					if ( isset( $text_to_link[ $shortcut_to ] ) ) {
+						$link = $text_to_link[ $shortcut_to ];
+					}
 				}
 
 				// If link is empty, or is another term reference, don't linkify.

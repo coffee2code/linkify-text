@@ -272,6 +272,7 @@ See the "Can I change how the link gets created because I want to add a 'title' 
     * Change: Refactor `get_option_names()`
     * 043:
     * Disregard invalid lines supplied as part of hash option value
+* Change: Prevent PHP warnings by ensuring array elements exist before use
 * Change: Cast return values of hooks to expected data types
 * New: Add README.md
 * New: Add GitHub link to readme
