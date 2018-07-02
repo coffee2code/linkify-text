@@ -280,7 +280,20 @@ dotorg => :WP
 					$link = 'http://' . $link;
 				}
 
-				$new_text = '<a href="' . esc_url( $link ) . '">\\1</a>';
+				$link_attrs = (array) apply_filters( 'c2c_linkify_text_link_attrs', array( 'href' => $link ), $old_text, $link );
+				// An href must be provided.
+				if ( empty( $link_attrs['href'] ) ) {
+					continue;
+				}
+				$attrs = '';
+				foreach ( $link_attrs as $attr => $val ) {
+					$attrs .= esc_attr( $attr );
+					$attrs .= '="';
+					$attrs .= ( 'href' === $attr ? esc_url( $val ) : esc_attr( $val ) );
+					$attrs .= '" ';
+				}
+				$new_text = '<a ' . trim( $attrs ) . '>\\1</a>';
+
 				$new_text = apply_filters( 'c2c_linkify_text_linked_text', $new_text, $old_text, $link, $text_to_link );
 
 				// Escape user-provided string from having regex characters.

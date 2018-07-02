@@ -135,7 +135,7 @@ Yes.
 
 == Hooks ==
 
-The plugin exposes six filters for hooking. Typically, the code to utilize these hooks would go inside your active theme's functions.php file. Bear in mind that all of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
+The plugin exposes a number of filters for hooking. Typically, code making use of filters should ideally be put into a mu-plugin or site-specific plugin (which is beyond the scope of this readme to explain). Bear in mind that most of the features controlled by these filters are configurable via the plugin's settings page. These filters are likely only of interest to advanced users able to code.
 
 **c2c_linkify_text_filters (filter)**
 
@@ -245,10 +245,39 @@ Example:
 
 See the "Can I change how the link gets created because I want to add a 'title' attribute to the link?" in the FAQ.
 
+**c2c_linkify_text_link_attrs (filter)**
+
+The 'c2c_linkify_text_link_attrs' hook allows you to add or customize attributes for the link.
+
+Arguments:
+
+* $attrs (array): The associative array of attributes to be used for the link. By default includes 'href'.
+* $old_text (string): The text being replaced/linkified.
+* $link (string): The URL that $old_text is to be linked to.
+
+Example:
+
+`
+/**
+ * Force links created by Linkify Text plugin to open in a new tab.
+ *
+ * @param array $attrs     The associative array of attributes to be used for the link.
+ * @param string $old_text The text being replaced/linkified.
+ * @param string $link     The URL that $old_text is to be linked to.
+ * @return array
+ */
+function my_linkify_text_attrs( $attrs, $old_text, $link ) {
+	$attrs['target'] = '_blank';
+	return $attrs;
+}
+add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
+`
+
 
 == Changelog ==
 
 = () =
+* New: Add filter 'c2c_linkify_text_link_attrs' for adding attributes to links
 * Change: Update plugin framework to 048
     * 048:
     * When resetting options, delete the option rather than setting it with default values

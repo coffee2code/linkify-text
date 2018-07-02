@@ -48,6 +48,8 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		remove_filter( 'c2c_linkify_text_comments',       '__return_true' );
 		remove_filter( 'c2c_linkify_text_filters',        array( $this, 'add_custom_filter' ) );
 		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'add_title_attribute_to_linkified_text' ), 10, 3 );
+		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'my_linkify_text_attrs' ), 10, 3 );
+		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'text_link_attrs' ), 10, 3 );
 	}
 
 
@@ -133,6 +135,19 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		return $display_link;
 	}
 
+	// Taken from example in readme.txt.
+	public function my_linkify_text_attrs( $attrs, $old_text, $link ) {
+		$attrs['target'] = '_blank';
+		return $attrs;
+	}
+
+	public function text_link_attrs( $attrs, $old_text, $link ) {
+		$attrs['href'] = strtr( $attrs['href'], array( 'http://' => 'https://' ) );
+		$attrs['target'] = '_blank';
+		$attrs['title'] = 'Scott Reilly is "' . $old_text . '"';
+
+		return $attrs;
+	}
 
 	//
 	//
@@ -486,6 +501,26 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 			$this->linkify_text( 'coffee2code' )
 		);
 	}
+
+	// NOTE: This is a test of an example given in the readme.
+	public function test_adding_link_attr_via_filter() {
+		add_filter( 'c2c_linkify_text_link_attrs', array( $this, 'my_linkify_text_attrs' ), 10, 3 );
+
+		$this->assertEquals(
+			'<a href="http://coffee2code.com" target="_blank">coffee2code</a>',
+			$this->linkify_text( 'coffee2code' )
+		);
+	}
+
+	public function test_defining_custom_link_attrs_via_filter() {
+		add_filter( 'c2c_linkify_text_link_attrs', array( $this, 'text_link_attrs' ), 10, 3 );
+
+		$this->assertEquals(
+			'<a href="https://coffee2code.com" target="_blank" title="Scott Reilly is &quot;coffee2code&quot;">coffee2code</a>',
+			$this->linkify_text( 'coffee2code' )
+		);
+	}
+
 
 	/*
 	 * Setting handling
