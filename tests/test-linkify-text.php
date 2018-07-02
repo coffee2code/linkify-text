@@ -48,6 +48,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		remove_filter( 'c2c_linkify_text_comments',       '__return_true' );
 		remove_filter( 'c2c_linkify_text_filters',        array( $this, 'add_custom_filter' ) );
 		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'add_title_attribute_to_linkified_text' ), 10, 3 );
+		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'disable_linking' ), 10, 3 );
 		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'my_linkify_text_attrs' ), 10, 3 );
 		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'text_link_attrs' ), 10, 3 );
 	}
@@ -133,6 +134,10 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		}
 
 		return $display_link;
+	}
+
+	public function disable_linking( $display_link, $text_to_link, $link_for_text  ) {
+		return $text_to_link;
 	}
 
 	// Taken from example in readme.txt.
@@ -501,6 +506,13 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 			$this->linkify_text( 'coffee2code' )
 		);
 	}
+
+	public function test_defining_custom_link_markup_via_filter_disables_linking() {
+		add_filter( 'c2c_linkify_text_linked_text', array( $this, 'disable_linking' ), 10, 3 );
+
+		$this->assertEquals( 'coffee2code', $this->linkify_text( 'coffee2code' ) );
+	}
+
 
 	// NOTE: This is a test of an example given in the readme.
 	public function test_adding_link_attr_via_filter() {

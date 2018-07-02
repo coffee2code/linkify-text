@@ -296,6 +296,11 @@ dotorg => :WP
 
 				$new_text = apply_filters( 'c2c_linkify_text_linked_text', $new_text, $old_text, $link, $text_to_link );
 
+				// Bail if text is unchanged.
+				if ( $new_text === $old_text ) {
+					continue;
+				}
+
 				// Escape user-provided string from having regex characters.
 				$old_text = preg_quote( $old_text, '~' );
 
