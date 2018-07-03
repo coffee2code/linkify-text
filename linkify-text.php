@@ -341,7 +341,7 @@ dotorg => :WP
 			}
 
 			// Remove links within links.
-			$text = preg_replace( "#(<a [^>]+>)(.*)<a [^>]+>([^<]*)</a>([^>]*)</a>#iU", "$1$2$3$4</a>" , $text );
+			$text = preg_replace( "#(<a [^>]+>)((?:(?!</a>).)*)<a [^>]+>([^<]*)</a>(.*</a>)#iU", "$1$2$3$4", $text );
 
 		}
 

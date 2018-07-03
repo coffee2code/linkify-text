@@ -236,9 +236,15 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 	public function test_does_not_link_within_links() {
-		$expected = '<a href="http://coffee2code.com">coffee2code</a>';
+		$expected = array(
+			'<a href="http://coffee2code.com">coffee2code</a>',
+			'<a href="http://example.com/buddypress-lastest-plugins/" class="more-link">Continue reading<span class="screen-reader-text"> &#8220;BuddyPress Latest Plugins&#8221;</span></a>',
+			'<a href="https://worpress.org">This is a test place, this is a test place.</a>',
+		);
 
-		$this->assertEquals( $expected, $this->linkify_text( $expected ) );
+		foreach ( $expected as $e ) {
+			$this->assertEquals( $e, $this->linkify_text( $e ) );
+		}
 	}
 
 	public function test_does_not_link_within_html_tags() {

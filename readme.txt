@@ -277,6 +277,7 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 == Changelog ==
 
 = () =
+* Fix: Improve handling of removing links within links
 * New: Add filter 'c2c_linkify_text_link_attrs' for adding attributes to links
 * Change: Update plugin framework to 048
     * 048:
