@@ -24,6 +24,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		'test'           => 'http://example.com/test1',
 		'test place'     => 'http://example.com/test2',
 		'example.com'    => 'http://example.com',
+		'wonder'         => 'https://example.com || Example title',
 	);
 
 	public static function setUpBeforeClass() {
@@ -51,6 +52,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'disable_linking' ), 10, 3 );
 		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'my_linkify_text_attrs' ), 10, 3 );
 		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'text_link_attrs' ), 10, 3 );
+		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'add_title_attr_to_linkified_text' ), 10, 3 );
 	}
 
 
@@ -150,6 +152,24 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$attrs['href'] = strtr( $attrs['href'], array( 'http://' => 'https://' ) );
 		$attrs['target'] = '_blank';
 		$attrs['title'] = 'Scott Reilly is "' . $old_text . '"';
+
+		return $attrs;
+	}
+
+	// Taken from example in readme.txt.
+	public function add_title_attr_to_linkified_text( $attrs, $old_text, $link_for_text ) {
+		// The string that you chose to separate the link URL and the title attribute text.
+		$separator = ' || ';
+
+		// Only change the linked text if a title has been defined
+		if ( false !== strpos( $link_for_text, $separator ) ) {
+			// Get the link and title that was defined for the text to be linked.
+			list( $url, $title ) = explode( $separator, $link_for_text, 2 );
+
+			// Set the attributes ('href' must be overridden to be a proper URL).
+			$attrs['href']  = $url;
+			$attrs['title'] = $title;
+		}
 
 		return $attrs;
 	}
@@ -527,6 +547,16 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<a href="http://coffee2code.com" target="_blank">coffee2code</a>',
 			$this->linkify_text( 'coffee2code' )
+		);
+	}
+
+	// NOTE: This is a test of an example given in the readme.
+	public function test_adding_link_title_attr_via_filter() {
+		add_filter( 'c2c_linkify_text_link_attrs', array( $this, 'add_title_attr_to_linkified_text' ), 10, 3 );
+
+		$this->assertEquals(
+			'<a href="https://example.com" title="Example title">wonder</a>',
+			$this->linkify_text( 'wonder' )
 		);
 	}
 

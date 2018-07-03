@@ -105,22 +105,31 @@ WP => https://wordpress.org || This is the link title
 Now the code:
 
 `
-function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $link_for_text, $text_to_link ) {
+/**
+ * Force links created by Linkify Text plugin to open in a new tab.
+ *
+ * @param array  $attrs         The associative array of attributes to be used for the link.
+ * @param string $old_text      The text being replaced/linkified.
+ * @param string $link_for_text The URL that $old_text is to be linked to.
+ * @return array
+ */
+function add_title_attribute_to_linkified_text( $attrs, $old_text, $link_for_text ) {
 	// The string that you chose to separate the link URL and the title attribute text.
 	$separator = ' || ';
 
 	// Only change the linked text if a title has been defined
 	if ( false !== strpos( $link_for_text, $separator ) ) {
 		// Get the link and title that was defined for the text to be linked.
-		list( $link, $title ) = explode( $separator, $link_for_text, 2 );
+		list( $url, $title ) = explode( $separator, $link_for_text, 2 );
 
-		// Make the link the way you want.
-		$display_link = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '">' . $text_to_link . '</a>';
+		// Set the attributes ('href' must be overridden to be a proper URL).
+		$attrs['href']  = $url;
+		$attrs['title'] = $title;
 	}
 
-	return $display_link;
+	return $attrs;
 }
-add_filter( 'c2c_linkify_text_linked_text', 'add_title_attribute_to_linkified_text', 10, 4 );
+add_filter( 'c2c_linkify_text_link_attrs', 'add_title_attribute_to_linkified_text', 10, 3 );
 `
 
 = Does this plugin include unit tests? =
@@ -232,7 +241,7 @@ add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 
 **c2c_linkify_text_linked_text (filter)**
 
-The 'c2c_linkify_text_linked_text' hook allows you to customize or override the replacement link markup for a given string.
+The 'c2c_linkify_text_linked_text' hook allows you to customize or override the replacement link markup for a given string. Return the value of $old_text to effectively prevent the given text linkification.
 
 Arguments:
 
@@ -243,7 +252,33 @@ Arguments:
 
 Example:
 
-See "Can I change how the link gets created because I want to add a 'title' attribute to the link?" in the FAQ.
+`
+/**
+ * Alternative approach to adding 'title' attribute for links.
+ *
+ * @param array  $display_link  The associative array of attributes to be used for the link.
+ * @param string $old_text      The text being replaced/linkified.
+ * @param string $link_for_text The URL that $old_text is to be linked to.
+ * @param string $text_to_link  The full array of text and the URLs they should link to.
+ * @return string
+ */
+function add_title_attribute_to_linkified_text( $display_link, $old_text, $link_for_text, $text_to_link ) {
+	// The string that you chose to separate the link URL and the title attribute text.
+	$separator = ' || ';
+
+	// Only change the linked text if a title has been defined
+	if ( false !== strpos( $link_for_text, $separator ) ) {
+		// Get the link and title that was defined for the text to be linked.
+		list( $link, $title ) = explode( $separator, $link_for_text, 2 );
+
+		// Make the link the way you want.
+		$display_link = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '">' . $text_to_link . '</a>';
+	}
+
+	return $display_link;
+}
+add_filter( 'c2c_linkify_text_linked_text', 'add_title_attribute_to_linkified_text', 10, 4 );
+`
 
 **c2c_linkify_text_link_attrs (filter)**
 
