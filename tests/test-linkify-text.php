@@ -50,6 +50,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		remove_filter( 'c2c_linkify_text_filters',        array( $this, 'add_custom_filter' ) );
 		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'add_title_attribute_to_linkified_text' ), 10, 3 );
 		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'disable_linking' ), 10, 3 );
+		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'selectively_disable_text_linkification' ), 10, 4 );
 		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'my_linkify_text_attrs' ), 10, 3 );
 		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'text_link_attrs' ), 10, 3 );
 		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'add_title_attr_to_linkified_text' ), 10, 3 );
@@ -173,6 +174,15 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 
 		return $attrs;
 	}
+
+	// Taken from example in readme.txt.
+	public function selectively_disable_text_linkification( $display_link, $old_text, $link_for_text, $text_to_link ) {
+		if ( get_metadata( 'post', get_the_ID(), 'disable_linkify_text', true ) ) {
+			$display_link = $old_text;
+		}
+		return $display_link;
+	}
+
 
 	//
 	//
@@ -539,6 +549,19 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'coffee2code', $this->linkify_text( 'coffee2code' ) );
 	}
 
+	// NOTE: This is a test of an example given in the readme.
+	public function test_selectively_disabling_linking_via_filter() {
+		add_filter( 'c2c_linkify_text_linked_text', array( $this, 'selectively_disable_text_linkification' ), 10, 4 );
+
+		$post_id = $this->factory->post->create();
+		$GLOBALS['post'] = get_post( $post_id );
+
+		$this->assertEquals( $this->expected_link( 'coffee2code', 'http://coffee2code.com' ), $this->linkify_text( 'coffee2code' ) );
+
+		add_post_meta( $post_id, 'disable_linkify_text', '1' );
+
+		$this->assertEquals( 'coffee2code', $this->linkify_text( 'coffee2code' ) );
+	}
 
 	// NOTE: This is a test of an example given in the readme.
 	public function test_adding_link_attr_via_filter() {

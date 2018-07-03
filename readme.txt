@@ -254,7 +254,8 @@ Example:
 
 `
 /**
- * Alternative approach to adding 'title' attribute for links.
+ * Disable linkification of links for posts that have the 'disable_linkify_text'
+ * custom field defined.
  *
  * @param array  $display_link  The associative array of attributes to be used for the link.
  * @param string $old_text      The text being replaced/linkified.
@@ -262,22 +263,13 @@ Example:
  * @param string $text_to_link  The full array of text and the URLs they should link to.
  * @return string
  */
-function add_title_attribute_to_linkified_text( $display_link, $old_text, $link_for_text, $text_to_link ) {
-	// The string that you chose to separate the link URL and the title attribute text.
-	$separator = ' || ';
-
-	// Only change the linked text if a title has been defined
-	if ( false !== strpos( $link_for_text, $separator ) ) {
-		// Get the link and title that was defined for the text to be linked.
-		list( $link, $title ) = explode( $separator, $link_for_text, 2 );
-
-		// Make the link the way you want.
-		$display_link = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '">' . $text_to_link . '</a>';
+function selectively_disable_text_linkification( $display_link, $old_text, $link_for_text, $text_to_link ) {
+	if ( get_metadata( 'post', get_the_ID(), 'disable_linkify_text', true ) ) {
+		$display_link = $old_text;
 	}
-
 	return $display_link;
 }
-add_filter( 'c2c_linkify_text_linked_text', 'add_title_attribute_to_linkified_text', 10, 4 );
+add_filter( 'c2c_linkify_text_linked_text', 'selectively_disable_text_linkification', 10, 4 );
 `
 
 **c2c_linkify_text_link_attrs (filter)**
