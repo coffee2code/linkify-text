@@ -311,7 +311,14 @@ dotorg => :WP
 				}
 
 				// Regex to find text to replace, but not when in HTML tags or shortcodes.
-				$regex = "(?![<\[].*)\b({$old_text})\b(?![^<>\[\]]*?[\]>])";
+				$regex = '(?![<\[].*)'  // Not followed by an an opening angle or square bracket
+					. '\b'              // Word boundary
+					. "({$old_text})"   // 1: The text to be linkified
+					. '\b'              // Word boundary
+					. '(?!'             // Non-capturing group
+					.     '[^<>\[\]]*?' // 0 or more characters that aren't angle or square brackets
+					.     '[\]>]'       // Character that isn't a closing angle or square bracket
+					. ')';              // End of non-capturing group
 
 				// If the text to be replaced has multibyte character(s), use
 				// mb_ereg_replace() if possible.
@@ -341,7 +348,24 @@ dotorg => :WP
 			}
 
 			// Remove links within links.
-			$text = preg_replace( "#(<a [^>]+>)((?:(?!</a>).)*)<a [^>]+>([^<]*)</a>(.*</a>)#iU", "$1$2$3$4", $text );
+			$text = preg_replace(
+				'#'
+					. '(<a [^>]+>)'      // 1: Opening link tag with any number of attributes
+					. '('                // 2: Contents of the link tag
+					.     '(?:'          // Non-capturing group
+					.         '(?!</a>)' // Not followed by closing link tag
+					.         '.'        // Any character
+					.     ')'            // End of non-capturing group
+					.     '*'            // 0 or more characters
+					. ')'                // End of 2:
+					. '<a [^>]+>'        // Embedded opening link tag with any number of attributes
+					. '([^<]*)'          // 3: Contents of the embedded link tag
+					. '</a>'             // Closing embedded link tag
+					. '(.*</a>)'         // 4: 0 or more characters followed by a closing link tag
+				. '#iU',
+				'$1$2$3$4',
+				$text
+			);
 
 		}
 
