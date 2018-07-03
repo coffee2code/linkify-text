@@ -120,7 +120,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 	// Taken from example in readme.txt.
-	public function add_title_attribute_to_linkified_text( $display_link, $text_to_link, $link_for_text  ) {
+	public function add_title_attribute_to_linkified_text( $display_link, $old_text, $link_for_text, $text_to_link ) {
 		// The string that you chose to separate the link URL and the title attribute text.
 		$separator = ' || ';
 
