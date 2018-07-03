@@ -48,7 +48,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		remove_filter( 'c2c_linkify_text_case_sensitive', '__return_true' );
 		remove_filter( 'c2c_linkify_text_comments',       '__return_true' );
 		remove_filter( 'c2c_linkify_text_filters',        array( $this, 'add_custom_filter' ) );
-		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'add_title_attribute_to_linkified_text' ), 10, 3 );
+		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'add_title_attribute_to_linkified_text' ), 10, 4 );
 		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'disable_linking' ), 10, 3 );
 		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'selectively_disable_text_linkification' ), 10, 4 );
 		remove_filter( 'c2c_linkify_text_link_attrs',     array( $this, 'my_linkify_text_attrs' ), 10, 3 );
@@ -133,7 +133,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 			list( $link, $title ) = explode( $separator, $link_for_text, 2 );
 
 			// Make the link the way you want.
-			$display_link = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '">' . $text_to_link . '</a>';
+			$display_link = '<a href="' . esc_url( $link ) . '" title="' . esc_attr( $title ) . '">' . $old_text . '</a>';
 		}
 
 		return $display_link;
@@ -535,7 +535,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		// Redine text_to_link to add title attribute text after the link in the link text.
 		$this->set_option( array( 'text_to_link' => array( 'coffee2code' => 'http://coffee2code.com || Scott Reilly' ) ) );
 		// Add custom handler via filter.
-		add_filter( 'c2c_linkify_text_linked_text', array( $this, 'add_title_attribute_to_linkified_text' ), 10, 3 );
+		add_filter( 'c2c_linkify_text_linked_text', array( $this, 'add_title_attribute_to_linkified_text' ), 10, 4 );
 
 		$this->assertEquals(
 			'<a href="http://coffee2code.com" title="Scott Reilly">coffee2code</a>',
