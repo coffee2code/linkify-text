@@ -260,6 +260,37 @@ dotorg => :WP
 			array_multisort( $keys, SORT_DESC, $text_to_link );
 
 			foreach ( $text_to_link as $old_text => $link ) {
+				// Escape user-provided string from having regex characters.
+				$old_text = preg_quote( $old_text, '~' );
+
+				// If the string to be linked includes '&', consider '&amp;' and '&#038;' equivalents.
+				// Visual editor will convert the former, but users aren't aware of the conversion.
+				if ( false !== strpos( $old_text, '&' ) ) {
+					$old_text = str_replace( '&', '&(amp;|#038;)?', $old_text );
+				}
+
+				// Regex to find text to replace, but not when in HTML tags or shortcodes.
+				$regex = '(?![<\[].*)'  // Not followed by an an opening angle or square bracket
+					. '\b'              // Word boundary
+					. "({$old_text})"   // 1: The text to be linkified
+					. '\b'              // Word boundary
+					. '(?!'             // Non-capturing group
+					.     '[^<>\[\]]*?' // 0 or more characters that aren't angle or square brackets
+					.     '[\]>]'       // Character that isn't a closing angle or square bracket
+					. ')';              // End of non-capturing group
+
+				// Check if the text contains the phrase to link.
+				if ( $can_do_mb && ( strlen( $old_text ) != mb_strlen( $old_text ) ) ) {
+					$has_text = mb_ereg_match( '.*' . $regex, $text, $preg_flags );
+				} else {
+					$has_text = preg_match( "~{$regex}~{$preg_flags}", $text );
+				}
+
+				// Don't linkify if the text doesn't include this word/phrase to link.
+				if ( ! $has_text ) {
+					continue;
+				}
+
 				// If the link starts with a colon, treat it as a special shortcut to the
 				// link for the referenced term. Nested referencing is not supported.
 				if ( $link && ':' === $link[0] ) {
@@ -310,25 +341,6 @@ dotorg => :WP
 				if ( $new_text === $old_text ) {
 					continue;
 				}
-
-				// Escape user-provided string from having regex characters.
-				$old_text = preg_quote( $old_text, '~' );
-
-				// If the string to be linked includes '&', consider '&amp;' and '&#038;' equivalents.
-				// Visual editor will convert the former, but users aren't aware of the conversion.
-				if ( false !== strpos( $old_text, '&' ) ) {
-					$old_text = str_replace( '&', '&(amp;|#038;)?', $old_text );
-				}
-
-				// Regex to find text to replace, but not when in HTML tags or shortcodes.
-				$regex = '(?![<\[].*)'  // Not followed by an an opening angle or square bracket
-					. '\b'              // Word boundary
-					. "({$old_text})"   // 1: The text to be linkified
-					. '\b'              // Word boundary
-					. '(?!'             // Non-capturing group
-					.     '[^<>\[\]]*?' // 0 or more characters that aren't angle or square brackets
-					.     '[\]>]'       // Character that isn't a closing angle or square bracket
-					. ')';              // End of non-capturing group
 
 				// If the text to be replaced has multibyte character(s), use
 				// mb_ereg_replace() if possible.

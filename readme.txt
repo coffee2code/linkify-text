@@ -320,6 +320,7 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 * New: Add setting to set if links should open in a new window/tab
 * New: Add filter 'c2c_linkify_text_link_attrs' for adding attributes to links
 * Fix: Improve handling of removing links within links
+* Change: Improve performance by checking for substring match for phrase to linkify before doing much work
 * Change: Update plugin framework to 048
     * 048:
     * When resetting options, delete the option rather than setting it with default values
