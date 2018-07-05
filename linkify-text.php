@@ -23,11 +23,9 @@
 
 /*
  * TODO
- * - Add class to link. Maybe add filter as well. (Q was asked about opening link in new window)
- * - Setting to open links in new window? (Forum request)
  * - Setting to prevent linkification if link points to current page? (Forum request)
  * - For multibyte strings to be linkified, honor the replace_once setting.
- * - Consider adding more options: specific number of replacements, open links in new tab, other
+ * - Consider adding more options: specific number of replacements, other
  *   common site places to filter
  * - Handle HTML special characters that Visual editor converts (like how '&' becomes '&amp;',
  *   which is explicitly handled). Are there others that should be handled?
@@ -155,6 +153,12 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 					. ' '
 					. __( 'NOTE: If the text to be linked contains multibyte characters, this setting is not honored.', 'linkify-text' ),
 			),
+			'open_new_window' => array(
+				'input'            => 'checkbox',
+				'default'          => false,
+				'label'            => __( 'Open links in a new window?', 'linkify-text' ),
+				'help'             => __( 'If checked, then links added by this plugin will open in a new window when clicked.', 'linkify-text' ),
+			),
 		);
 	}
 
@@ -229,6 +233,7 @@ dotorg => :WP
 		$options         = $this->get_options();
 		$text_to_link    = (array) apply_filters( 'c2c_linkify_text',               (array) $options['text_to_link'] );
 		$case_sensitive  = (bool) apply_filters( 'c2c_linkify_text_case_sensitive', (bool) $options['case_sensitive'] );
+		$open_new_window = (bool) apply_filters( 'c2c_linkify_text_open_new_window',(bool) $options['open_new_window'] );
 		$limit           = (bool) apply_filters( 'c2c_linkify_text_replace_once',   (bool) $options['replace_once'] ) === true ? 1 : -1;
 		$preg_flags      = $case_sensitive ? 's' : 'si';
 		$mb_regex_encoding = null;
@@ -280,7 +285,12 @@ dotorg => :WP
 					$link = 'http://' . $link;
 				}
 
-				$link_attrs = (array) apply_filters( 'c2c_linkify_text_link_attrs', array( 'href' => $link ), $old_text, $link );
+				$link_attrs = array( 'href' => $link );
+				if ( $open_new_window ) {
+					$link_attrs['target'] = '_blank';
+				}
+				$link_attrs = (array) apply_filters( 'c2c_linkify_text_link_attrs', $link_attrs, $old_text, $link );
+
 				// An href must be provided.
 				if ( empty( $link_attrs['href'] ) ) {
 					continue;

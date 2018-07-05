@@ -47,6 +47,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		remove_filter( 'c2c_linkify_text_replace_once',   '__return_true' );
 		remove_filter( 'c2c_linkify_text_case_sensitive', '__return_true' );
 		remove_filter( 'c2c_linkify_text_comments',       '__return_true' );
+		remove_filter( 'c2c_linkify_text_open_new_window','__return_true' );
 		remove_filter( 'c2c_linkify_text_filters',        array( $this, 'add_custom_filter' ) );
 		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'add_title_attribute_to_linkified_text' ), 10, 4 );
 		remove_filter( 'c2c_linkify_text_linked_text',    array( $this, 'disable_linking' ), 10, 3 );
@@ -441,6 +442,25 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $this->expected_link( 'Coffee2code', 'http://coffee2code.com' ), $this->linkify_text( 'Coffee2code' ) );
 		$this->assertEquals( $this->expected_link( 'COFFEE2CODE', 'http://coffee2code.com' ), $this->linkify_text( 'COFFEE2CODE' ) );
 	}
+
+	public function test_link_opens_in_new_window_via_setting() {
+		$this->set_option( array( 'open_new_window' => true ) );
+
+		$this->assertEquals(
+			'<a href="http://coffee2code.com" target="_blank">coffee2code</a>',
+			$this->linkify_text( 'coffee2code' )
+		);
+	}
+
+	public function test_link_opens_in_new_window_via_filter() {
+		add_filter( 'c2c_linkify_text_open_new_window', '__return_true' );
+
+		$this->assertEquals(
+			'<a href="http://coffee2code.com" target="_blank">coffee2code</a>',
+			$this->linkify_text( 'coffee2code' )
+		);
+	}
+
 
 	public function test_linkifies_term_added_via_filter() {
 		$this->assertEquals( 'bbPress', $this->linkify_text( 'bbPress' ) );

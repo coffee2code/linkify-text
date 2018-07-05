@@ -239,6 +239,19 @@ Example:
 `// Only linkify a term once per post.
 add_filter( 'c2c_linkify_text_replace_once', '__return_true' );`
 
+**c2c_linkify_text_open_new_window (filter)**
+
+The 'c2c_linkify_text_open_new_window' hook allows you to customize or override the setting indicating if links should open in a new window.
+
+Arguments:
+
+* $state (bool): Either true or false indicating if links should open in a new window. The default value will be the value set via the plugin's settings page, which itself is defaulted to false.
+
+Example:
+
+`// Make links open in a new window.
+add_filter( 'c2c_linkify_text_open_new_window', '__return_true' );`
+
 **c2c_linkify_text_linked_text (filter)**
 
 The 'c2c_linkify_text_linked_text' hook allows you to customize or override the replacement link markup for a given string. Return the value of $old_text to effectively prevent the given text linkification.
@@ -304,8 +317,9 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 == Changelog ==
 
 = () =
-* Fix: Improve handling of removing links within links
+* New: Add setting to set if links should open in a new window/tab
 * New: Add filter 'c2c_linkify_text_link_attrs' for adding attributes to links
+* Fix: Improve handling of removing links within links
 * Change: Update plugin framework to 048
     * 048:
     * When resetting options, delete the option rather than setting it with default values
