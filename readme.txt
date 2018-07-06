@@ -348,6 +348,7 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 * Change: Bail early if filtering disables linking of the given text
 * Change: Prevent PHP warnings by ensuring array elements exist before use
 * Change: Cast return values of hooks to expected data types
+* Change: Improve setting page help text
 * New: Add README.md
 * New: Add GitHub link to readme
 * Change: Store setting name in constant

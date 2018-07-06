@@ -132,7 +132,7 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 				'label'            => __( 'Text and Links', 'linkify-text' ),
 				'help'             => __( 'Define only one text and associated link per line, and don\'t span lines.', 'linkify-text' )
 					. '<br />'
-					. __( 'Tip: Use a colon-prefixed term instead of a link to point to that term\'s link, e.g. <code>WP => :WordPress</code> will use the same link defined for WordPress', 'linkify-text' ),
+					. __( 'Tip: Use a colon-prefixed term instead of a link to point to that term\'s link, e.g. <code>WP => :WordPress</code> will use the same link defined for <code>WordPress</code>', 'linkify-text' ),
 			),
 			'linkify_text_comments' => array(
 				'input'            => 'checkbox',
@@ -149,9 +149,7 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 				'input'            => 'checkbox',
 				'default'          => false,
 				'label'            => __( 'Case sensitive text matching?', 'linkify-text' ),
-				'help'             => __( 'If checked, then linkification of WordPress would also affect wordpress.', 'linkify-text' )
-					. ' '
-					. __( 'NOTE: If the text to be linked contains multibyte characters, this setting is not honored.', 'linkify-text' ),
+				'help'             => __( 'If checked, then linkification of "WordPress" would also affect "wordpress".', 'linkify-text' )
 			),
 			'open_new_window' => array(
 				'input'            => 'checkbox',
@@ -186,19 +184,19 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 		echo '<p>' . __( 'Description: Automatically hyperlink words or phrases in your posts.', 'linkify-text' ) . '</p>';
 		echo '<p>' . __( 'Define text and the URL they should be linked to in the field below. The format should be like this:', 'linkify-text' ) . '</p>';
 		echo "<blockquote><code>WordPress => https://wordpress.org</code></blockquote>";
-		echo '<p>' . __( 'Where <code>WordPress</code> is the text you want to get linked and <code>https://wordpress.org</code> would be what the target for that link.', 'linkify-text' ) . '</p>';
+		echo '<p>' . __( 'Where <code>WordPress</code> is the text you want to get linked and <code>https://wordpress.org</code> would be the target for that link.', 'linkify-text' ) . '</p>';
 		echo '<p>' . __( 'You can link multiple terms to the same link and only have to define the link once. Simply provide the link for a given term, then for subsequent terms sharing the same link, use the original term prepended with a colon as the link, e.g.', 'linkify-text' ) . '</p>';
 		echo '<blockquote><pre><code>WP => https://wordpress.org
 WordPress => :WP
 dotorg => :WP
 </code></pre></blockquote>';
 		echo '<p>' . sprintf( __( 'All of the above terms would link to %s.', 'linkify-text' ), 'https://wordpress.org' ) . '</p>';
-		echo '<p>' . __( 'NOTE: A referenced term must have a link; it cannot be a reference to another term.', 'linkify-text' ) . '</p>';
+		echo '<p>' . __( 'NOTE: A referenced term must have a link; it cannot be a reference to another term. So for the example above, "dotorg" cannot specify ":WordPress" since "WordPress" is itself a reference to another term (":WP").', 'linkify-text' ) . '</p>';
 		echo '<p>' . __( 'Other considerations:', 'linkify-text' ) . '</p>';
 		echo '<ul class="c2c-plugin-list"><li>';
 		echo __( 'Text must represent a whole word or phrase, not a partial string.', 'linkify-text' );
 		echo '</li><li>';
-		echo __( 'If the protocol is not specified, then \'http://\' is assumed.', 'linkify-text' );
+		echo __( 'If the protocol is not specified for the URL, then \'http://\' is assumed.', 'linkify-text' );
 		echo '</li></ul>';
 	}
 
