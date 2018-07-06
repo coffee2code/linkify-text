@@ -132,7 +132,7 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 				'label'            => __( 'Text and Links', 'linkify-text' ),
 				'help'             => __( 'Define only one text and associated link per line, and don\'t span lines.', 'linkify-text' )
 					. '<br />'
-					. __( 'Use a colon-prefixed term instead of a link to point to that term\'s link, e.g. <code>WP => :WordPress</code> will use the same link defined for WordPress', 'linkify-text' ),
+					. __( 'Tip: Use a colon-prefixed term instead of a link to point to that term\'s link, e.g. <code>WP => :WordPress</code> will use the same link defined for WordPress', 'linkify-text' ),
 			),
 			'linkify_text_comments' => array(
 				'input'            => 'checkbox',
