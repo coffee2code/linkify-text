@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.8
+Stable tag: 1.9
 
 Automatically add links to words or phrases in your posts.
 
@@ -323,7 +323,12 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 
 == Changelog ==
 
-= () =
+= 1.9 (2018-07-05) =
+Highlights:
+
+* This release adds a setting for links to open in a new window, adds support for linkable text spanning multiple lines in your post, adds a filter for customizing link attributes, improves performance, and makes numerous behind-the-scenes improvements and changes.
+
+Details:
 * New: Add setting to set if links should open in a new window/tab
 * New: Add filter 'c2c_linkify_text_link_attrs' for adding attributes to links
 * New: Add support for finding linkable text that may span more than one line or consist of internal spaces
@@ -473,6 +478,9 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 
 
 == Upgrade Notice ==
+
+= 1.9 =
+Recommended update: added setting to open links in new window; added filter for customizing link attributes; improved performance; allow for linkable text to contain any number of whitespace; updated plugin framework to v048; compatibility is now WP 4.7-4.9; added README.md; more.
 
 = 1.8 =
 Recommended update: fixed to honor 'replace once' setting, including for multibyte strings; preserved capitalization of linkified text; matched longer strings before shorter strings; added support for language packs; compatibility is now WP 4.1-4.5+

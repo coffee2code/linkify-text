@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Linkify Text
- * Version:     1.8
+ * Version:     1.9
  * Plugin URI:  http://coffee2code.com/wp-plugins/linkify-text/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
@@ -18,7 +18,7 @@
  *
  * @package Linkify_Text
  * @author  Scott Reilly
- * @version 1.8
+ * @version 1.9
  */
 
 /*
@@ -30,6 +30,9 @@
  * - Handle HTML special characters that Visual editor converts (like how '&' becomes '&amp;',
  *   which is explicitly handled). Are there others that should be handled?
  * - Inline documentation for hooks.
+ * - Improve performance by first checking which (if any) of the text_to_link phrases are
+ *   contained in the text before doing much additional work. (This has been coded but not
+ *   included while I consider its merits).
  *
  */
 
@@ -91,7 +94,7 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 	 * Constructor.
 	 */
 	protected function __construct() {
-		parent::__construct( '1.8', 'linkify-text', 'c2c', __FILE__, array() );
+		parent::__construct( '1.9', 'linkify-text', 'c2c', __FILE__, array() );
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 
 		return self::$instance = $this;
