@@ -212,6 +212,12 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertTrue( is_a( c2c_LinkifyText::get_instance(), 'c2c_LinkifyText' ) );
 	}
 
+	public function test_no_problems_if_no_linkable_text_defined() {
+		$this->set_option( array( 'text_to_link' => ' ' ) );
+
+		$this->assertEquals( 'coffee2code', $this->linkify_text( 'coffee2code' ) );
+	}
+
 	public function test_linkifies_text() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 
@@ -241,10 +247,30 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $this->expected_link( $mb_string, self::$text_to_link[ $mb_string ] ), $this->linkify_text( $mb_string ) );
 	}
 
+	public function test_linkifies_multiple_multibyte_text_with_038_ampersand() {
+		$mb_string = '漢字はユニコード AT&#038;T 漢字はユニコード';
+
+		$expected = $this->expected_link( '漢字はユニコード', self::$text_to_link[ '漢字はユニコード' ] )
+			. ' '
+			. $this->expected_link( 'AT&#038;T', self::$text_to_link[ 'AT&T' ] )
+			. ' '
+			. $this->expected_link( '漢字はユニコード', self::$text_to_link[ '漢字はユニコード' ] );
+
+		$this->assertEquals( $expected, $this->linkify_text( $mb_string ) );
+	}
+
 	public function test_linkifies_single_term_multiple_times() {
 		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' );
 
 		$this->assertEquals( "$expected $expected $expected", $this->linkify_text( 'coffee2code coffee2code coffee2code' ) );
+	}
+
+	public function test_linkifies_multiple_terms() {
+		$expected = $this->expected_link( 'coffee2code', 'http://coffee2code.com' )
+			. ' ' . $this->expected_link( 'my posts', '/authors/scott' )
+			. ' ' . $this->expected_link( 'test', 'http://example.com/test1' );
+
+		$this->assertEquals( $expected, $this->linkify_text( 'coffee2code my posts test' ) );
 	}
 
 	public function test_linkifies_content_of_non_link_tags() {
@@ -270,7 +296,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$expected = array(
 			'<a href="http://coffee2code.com">coffee2code</a>',
 			'<a href="http://example.com/buddypress-lastest-plugins/" class="more-link">Continue reading<span class="screen-reader-text"> &#8220;BuddyPress Latest Plugins&#8221;</span></a>',
-			'<a href="https://worpress.org">This is a test place, this is a test place.</a>',
+			'<a href="https://wordpress.org">This is a test place, this is a test place.</a>', // Known failure as of v1.9
 		);
 
 		foreach ( $expected as $e ) {
@@ -390,7 +416,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 	// NOTE: This could eventually be supported, though circular referencing should be accounted for.
-	public function test_does_not_linkify_text_via_referencing_another_term() {
+	public function test_does_not_linkify_text_that_references_another_term_that_also_references_another_term() {
 		$this->assertEquals( 'me', $this->linkify_text( 'me' ) );
 	}
 
