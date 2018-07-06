@@ -366,11 +366,18 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 	public function test_linkifies_multibyte_text_once_via_setting() {
-		$expected = $this->expected_link( 'Cocktail glacé', 'http://www.domain.com/cocktail-glace.html' );
+		$linked = $this->expected_link( 'Cocktail glacé', 'http://www.domain.com/cocktail-glace.html' );
 
 		$this->set_option( array( 'replace_once' => true ) );
 
-		$this->assertEquals( "$expected Cocktail glacé Cocktail glacé", $this->linkify_text( 'Cocktail glacé Cocktail glacé Cocktail glacé' ) );
+		$expected = array(
+			"$linked Cocktail glacé Cocktail glacé" => $this->linkify_text( 'Cocktail glacé Cocktail glacé Cocktail glacé' ),
+			$this->expected_link( '漢字はユニコード' ) => $this->linkify_text( '漢字はユニコード' ),
+		);
+
+		foreach ( $expected as $expect => $actual ) {
+			$this->assertEquals( $expect, $actual );
+		}
 	}
 
 	public function test_linkifies_text_via_term_referencing() {
@@ -390,6 +397,19 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	// NOTE: Not trying to be too sophisticted here.
 	public function test_does_not_linkify_text_if_link_does_not_look_like_link() {
 		$this->assertEquals( 'not a link', $this->linkify_text( 'not a link' ) );
+	}
+
+	public function tests_linkifies_term_split_across_multiple_lines() {
+		$expected = array(
+			"These are " . $this->expected_link( "my\nposts", '/authors/scott' ) . " to read"
+				=> $this->linkify_text( "These are my\nposts to read" ),
+			"These are " . $this->expected_link( "Cocktail\n\tglacé", 'http://www.domain.com/cocktail-glace.html' ) . " to read"
+				=> $this->linkify_text( "These are Cocktail\n\tglacé to read" ),
+		);
+
+		foreach ( $expected as $expect => $actual ) {
+			$this->assertEquals( $expect, $actual );
+		}
 	}
 
 	public function test_linkifies_once_via_setting() {

@@ -235,7 +235,7 @@ dotorg => :WP
 		$case_sensitive  = (bool) apply_filters( 'c2c_linkify_text_case_sensitive', (bool) $options['case_sensitive'] );
 		$open_new_window = (bool) apply_filters( 'c2c_linkify_text_open_new_window',(bool) $options['open_new_window'] );
 		$limit           = (bool) apply_filters( 'c2c_linkify_text_replace_once',   (bool) $options['replace_once'] ) === true ? 1 : -1;
-		$preg_flags      = $case_sensitive ? 's' : 'si';
+		$preg_flags      = $case_sensitive ? 'ms' : 'msi';
 		$mb_regex_encoding = null;
 
 		$text = ' ' . $text . ' ';
@@ -268,6 +268,9 @@ dotorg => :WP
 				if ( false !== strpos( $old_text, '&' ) ) {
 					$old_text = str_replace( '&', '&(amp;|#038;)?', $old_text );
 				}
+
+				// Allow spaces in linkable text to represent any number of whitespace chars.
+				$old_text = mb_ereg_replace( '\s+', '\s+', $old_text );
 
 				// Regex to find text to replace, but not when in HTML tags or shortcodes.
 				$regex = '(?![<\[].*)'  // Not followed by an an opening angle or square bracket
@@ -349,12 +352,15 @@ dotorg => :WP
 					// replacements, hence the different handling if replacing once.
 					if ( 1 === $limit ) {
 						// Find first occurrence of the search string.
-						$pos = mb_strpos( $text, $old_text );
+						mb_ereg_search_init( $text, $old_text, $preg_flags );
+						$pos = mb_ereg_search_pos();
+
 						// Only do the replacement if the search string was found.
 						if ( false !== $pos ) {
-							$text  = mb_substr( $text, 0, $pos )
-								. sprintf( str_replace( "\\1", '%s', $new_text ), $old_text )
-								. mb_substr( $text, $pos + mb_strlen( $old_text ) );
+							$match = mb_ereg_search_getregs();
+							$text  = mb_substr( $text, 0, $pos[0] )
+								. sprintf( str_replace( "\\1", '%s', $new_text ), $match[0] )
+								. mb_substr( $text, $pos[0] + $pos[1]-1 );
 						}
 					} else {
 						$text = mb_ereg_replace( $regex, $new_text, $text, $preg_flags );
