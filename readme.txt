@@ -19,8 +19,11 @@ Additional features of the plugin controlled via settings and filters:
 * Text linkification can be enabled for comments (it isn't by default)
 * Text linkification can be made case sensitive (it isn't by default)
 * Text linkification can be limited to doing only one linkification per term, per post (by default, all occurrences of a term are linkified)
+* Text linkification links can be set to open in a new window (it isn't by default)
 
 You can also link multiple terms to the same link and only define that link once in the settings via use of a special link syntax.
+
+A number of filters exist to programmatically customize the behavior of the plugin, all of which are documented.
 
 Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/linkify-text/) | [Plugin Directory Page](https://wordpress.org/plugins/linkify-text/) | [GitHub](https://github.com/coffe2code/linkify-text/) | [Author Homepage](http://coffee2code.com)
 
@@ -131,6 +134,10 @@ function add_title_attribute_to_linkified_text( $attrs, $old_text, $link_for_tex
 }
 add_filter( 'c2c_linkify_text_link_attrs', 'add_title_attribute_to_linkified_text', 10, 3 );
 `
+
+= Can I selectively disable text linkification? =
+
+Yes, with some custom code making use of the 'c2c_linkify_text_linked_text' filter. The code should determine if the given text linkification should be disabled, and if so, return the second argument sent via the filter. See the docs for the 'c2c_linkify_text_linked_text' filter for an example of how a custom field could be used to disable all text linkifications on a per-post basis. No doubt your particular situation will require custom logic to determine when to disable linkification.
 
 = Does this plugin include unit tests? =
 
