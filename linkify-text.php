@@ -227,7 +227,7 @@ dotorg => :WP
 	 */
 	public function linkify_text( $text ) {
 		$options         = $this->get_options();
-		$text_to_link    = apply_filters( 'c2c_linkify_text',                       $options['text_to_link'] );
+		$text_to_link    = (array) apply_filters( 'c2c_linkify_text',               (array) $options['text_to_link'] );
 		$case_sensitive  = (bool) apply_filters( 'c2c_linkify_text_case_sensitive', (bool) $options['case_sensitive'] );
 		$limit           = (bool) apply_filters( 'c2c_linkify_text_replace_once',   (bool) $options['replace_once'] ) === true ? 1 : -1;
 		$preg_flags      = $case_sensitive ? 's' : 'si';
