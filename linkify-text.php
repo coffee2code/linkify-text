@@ -257,7 +257,7 @@ dotorg => :WP
 			// E.g. if "abc" and "abc def" are both defined for linking and in that
 			// order, the string "abc def ghi" would match on "abc def", the longer
 			// string rather than the shorter, less precise "abc".
-			$keys = array_map( 'mb_strlen', array_keys( $text_to_link ) );
+			$keys = array_map( $can_do_mb ? 'mb_strlen' : 'strlen', array_keys( $text_to_link ) );
 			array_multisort( $keys, SORT_DESC, $text_to_link );
 
 			foreach ( $text_to_link as $old_text => $link ) {
@@ -271,7 +271,7 @@ dotorg => :WP
 				}
 
 				// Allow spaces in linkable text to represent any number of whitespace chars.
-				$old_text = mb_ereg_replace( '\s+', '\s+', $old_text );
+				$old_text = preg_replace( '/\s+/', '\s+', $old_text );
 
 				// Regex to find text to replace, but not when in HTML tags or shortcodes.
 				$regex = '(?![<\[].*)'  // Not followed by an an opening angle or square bracket

@@ -323,6 +323,9 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 
 == Changelog ==
 
+= () =
+* Fix: Ensure `mb_*` functions aren't used when not available
+
 = 1.9 (2018-07-05) =
 Highlights:
 
