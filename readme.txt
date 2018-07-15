@@ -325,6 +325,7 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 
 = () =
 * Fix: Ensure `mb_*` functions aren't used when not available
+* Fix: Prevent conflicts with oembeds by firing at a lower hook priority
 
 = 1.9 (2018-07-05) =
 Highlights:

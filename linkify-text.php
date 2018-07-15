@@ -169,7 +169,7 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 	public function register_filters() {
 		$filters = (array) apply_filters( 'c2c_linkify_text_filters', array( 'the_content', 'the_excerpt', 'widget_text' ) );
 		foreach ( $filters as $filter ) {
-			add_filter( $filter, array( $this, 'linkify_text' ), 2 );
+			add_filter( $filter, array( $this, 'linkify_text' ), 9 );
 		}
 
 		add_filter( 'get_comment_text',    array( $this, 'linkify_comment_text' ), 11 );
