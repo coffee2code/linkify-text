@@ -25,6 +25,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		'test place'     => 'http://example.com/test2',
 		'example.com'    => 'http://example.com',
 		'wonder'         => 'https://example.com || Example title',
+		'bác sĩ thú y'   => 'https://www.bacsithuy.org',
 	);
 
 	public static function setUpBeforeClass() {
@@ -247,6 +248,26 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 		$this->assertEquals( $this->expected_link( $mb_string, self::$text_to_link[ $mb_string ] ), $this->linkify_text( $mb_string ) );
 	}
 
+	public function test_linkifies_multibyte_text_long_text() {
+		$text = <<<HTML
+<p>Liệu bạn đã biết cách nuôi chó sạch sẽ hay chưa. Phải làm thế nào sau một ngày làm việc vất vả, bạn trở về ngôi nhà thân yêu được bình yên nhất. Nếu bạn có đang nuôi một chú chó, điều đó có phải là quá khó hay không?</p>
+
+<p>Với bản tính tinh nghịch, chúng sẽ phá tan ngôi nhà của bạn ra mất. Đừng lo, sau đây bác sĩ thú y sẽ cho bạn một vài lời khuyên hữu ích về các cách nuôi chó sạch sẽ&nbsp; nhé.</p>
+
+<h2>Dạy chó đi vệ sinh đúng chỗ</h2>
+HTML;
+
+		$expected = <<<HTML
+<p>Liệu bạn đã biết cách nuôi chó sạch sẽ hay chưa. Phải làm thế nào sau một ngày làm việc vất vả, bạn trở về ngôi nhà thân yêu được bình yên nhất. Nếu bạn có đang nuôi một chú chó, điều đó có phải là quá khó hay không?</p>
+
+<p>Với bản tính tinh nghịch, chúng sẽ phá tan ngôi nhà của bạn ra mất. Đừng lo, sau đây <a href="https://www.bacsithuy.org">bác sĩ thú y</a> sẽ cho bạn một vài lời khuyên hữu ích về các cách nuôi chó sạch sẽ&nbsp; nhé.</p>
+
+<h2>Dạy chó đi vệ sinh đúng chỗ</h2>
+HTML;
+
+		$this->assertEquals( $expected, $this->linkify_text( $text ) );
+	}
+
 	public function test_linkifies_multiple_multibyte_text_with_038_ampersand() {
 		$mb_string = '漢字はユニコード AT&#038;T 漢字はユニコード';
 
@@ -398,7 +419,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 
 		$expected = array(
 			"$linked Cocktail glacé Cocktail glacé" => $this->linkify_text( 'Cocktail glacé Cocktail glacé Cocktail glacé' ),
-			$this->expected_link( '漢字はユニコード' ) => $this->linkify_text( '漢字はユニコード' ),
+			$this->expected_link( '漢字はユニコード' ) => $this->linkify_text( '漢字はユニコード 漢字はユニコード' ),
 		);
 
 		foreach ( $expected as $expect => $actual ) {
