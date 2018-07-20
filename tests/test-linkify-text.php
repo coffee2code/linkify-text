@@ -206,7 +206,7 @@ class Linkify_Text_Test extends WP_UnitTestCase {
 	}
 
 	public function test_get_version() {
-		$this->assertEquals( '1.9', c2c_LinkifyText::get_instance()->version() );
+		$this->assertEquals( '1.9.1', c2c_LinkifyText::get_instance()->version() );
 	}
 
 	public function test_instance_object_is_returned() {

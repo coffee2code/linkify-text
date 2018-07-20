@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 1.9
+Stable tag: 1.9.1
 
 Automatically add links to words or phrases in your posts.
 
@@ -323,7 +323,7 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 
 == Changelog ==
 
-= () =
+= 1.9.1 (2018-07-19) =
 * Fix: Ensure `mb_*` functions aren't used when not available
 * Fix: Prevent conflicts with oembeds by firing at a lower hook priority
 * New: Add a unit test related to multibyte text
@@ -483,6 +483,9 @@ Details:
 
 
 == Upgrade Notice ==
+
+= 1.9.1 =
+Minor bugfix release: prevented multibyte functions from being used if not available; prevented conflicts with oembeds.
 
 = 1.9 =
 Recommended update: added setting to open links in new window; added filter for customizing link attributes; improved performance; allow for linkable text to contain any number of whitespace; updated plugin framework to v048; compatibility is now WP 4.7-4.9; added README.md; more.
