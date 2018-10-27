@@ -25,7 +25,7 @@ You can also link multiple terms to the same link and only define that link once
 
 A number of filters exist to programmatically customize the behavior of the plugin, all of which are documented.
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/linkify-text/) | [Plugin Directory Page](https://wordpress.org/plugins/linkify-text/) | [GitHub](https://github.com/coffe2code/linkify-text/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/linkify-text/) | [Plugin Directory Page](https://wordpress.org/plugins/linkify-text/) | [GitHub](https://github.com/coffee2code/linkify-text/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
