@@ -994,13 +994,6 @@ HTML;
 
 		do_action( $this->get_hook( 'after_settings_form' ), $this );
 
-		echo '<div id="c2c" class="wrap"><div>' . "\n";
-		$c2c = '<a href="http://coffee2code.com" title="coffee2code.com">' . __( 'Scott Reilly, aka coffee2code', 'linkify-text' ) . '</a>';
-		echo sprintf( __( 'This plugin brought to you by %s.', 'linkify-text' ), $c2c );
-		echo '<span><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ARCFJ9TX3522" title="' . esc_attr__( 'Please consider a donation', 'linkify-text' ) . '">' .
-		__( 'Did you find this plugin useful?', 'linkify-text' ) . '</a></span>';
-		echo '</div>' . "\n";
-
 		echo '</div>' . "\n";
 	}
 
