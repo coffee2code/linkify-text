@@ -10,6 +10,8 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Description: Automatically add links to words or phrases in your posts.
  *
+ * GitHub Plugin URI: https://github.com/4n70w4/linkify-text
+ *
  * Compatible with WordPress 4.7 through 4.9+.
  *
  * =>> Read the accompanying readme.txt file for instructions and documentation.
