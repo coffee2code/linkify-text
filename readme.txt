@@ -323,6 +323,10 @@ add_filter( 'c2c_linkify_text_link_attrs', 'my_linkify_text_attrs', 10, 3 );
 
 == Changelog ==
 
+= () =
+* Fix: Correct typo in GitHub URL. Props 4n70w4
+* Fix: Correct inverted logic in description for case-sensitivity checkbox
+
 = 1.9.1 (2018-07-19) =
 * Fix: Ensure `mb_*` functions aren't used when not available
 * Fix: Prevent conflicts with oembeds by firing at a lower hook priority

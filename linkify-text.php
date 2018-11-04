@@ -152,7 +152,7 @@ final class c2c_LinkifyText extends c2c_LinkifyText_Plugin_048 {
 				'input'            => 'checkbox',
 				'default'          => false,
 				'label'            => __( 'Case sensitive text matching?', 'linkify-text' ),
-				'help'             => __( 'If checked, then linkification of "WordPress" would also affect "wordpress".', 'linkify-text' )
+				'help'             => __( 'If checked, then linkification of "WordPress" would not affect "wordpress".', 'linkify-text' )
 			),
 			'open_new_window' => array(
 				'input'            => 'checkbox',
