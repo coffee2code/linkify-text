@@ -960,7 +960,7 @@ HTML;
 			echo "<input type='{$input}' {$attribs} value='" . esc_attr( $value ) . "' />\n";
 		}
 		if ( $help = apply_filters( $this->get_hook( 'option_help'), $this->config[ $opt ]['help'], $opt ) ) {
-			echo "<p class='description'>{$help}</p>\n";
+			echo "<label class='description' for='{$opt}'>{$help}</label>\n";
 		}
 
 		do_action( $this->get_hook( 'post_display_option' ), $opt );
