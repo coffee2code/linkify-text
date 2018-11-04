@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Linkify Text\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-03 23:31+0000\n"
-"PO-Revision-Date: 2018-11-04 00:30+0000\n"
+"PO-Revision-Date: 2018-11-04 00:41+0000\n"
 "Last-Translator: Администратор <albus.optimus@gmail.com>\n"
 "Language-Team: Русский\n"
 "Language: ru-RU\n"
@@ -117,7 +117,7 @@ msgstr ""
 #: linkify-text.php:204
 msgid ""
 "If the protocol is not specified for the URL, then 'http://' is assumed."
-msgstr "Если для URL-адреса не указан протокол, будет использован «http: //»."
+msgstr "Если для URL-адреса не указан протокол, будет использован «http://»."
 
 #: c2c-plugin.php:83
 #, php-format
