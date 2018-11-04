@@ -1,0 +1,245 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Linkify Text\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-03 23:31+0000\n"
+"PO-Revision-Date: 2018-11-04 00:41+0000\n"
+"Last-Translator: Администратор <albus.optimus@gmail.com>\n"
+"Language-Team: Русский\n"
+"Language: ru-RU\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
+"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: c2c-plugin.php:573
+msgid " (especially check out the \"Other Notes\" tab, if present)"
+msgstr "(также проверьте вкладку «Другие заметки», если она есть)"
+
+#: c2c-plugin.php:393 c2c-plugin.php:401
+#, php-format
+msgid "A value is required for: \"%s\""
+msgstr "Значение для: «%s» обязательно"
+
+#: linkify-text.php:198
+#, php-format
+msgid "All of the above terms would link to %s."
+msgstr "В данном примере все указанные слова будут ссылками на %s."
+
+#. Description of the plugin
+msgid "Automatically add links to words or phrases in your posts."
+msgstr "Автоматически добавлять ссылки на слова или фразы в записях."
+
+#: linkify-text.php:156
+msgid "Case sensitive text matching?"
+msgstr "Соответствие текста с учётом регистра?"
+
+#: c2c-plugin.php:572
+msgid "Click for more help on this plugin"
+msgstr "Нажмите для получения дополнительной справки по этому плагину"
+
+#: c2c-plugin.php:707
+msgid "Coffee fuels my coding."
+msgstr ""
+
+#: linkify-text.php:138
+msgid ""
+"Define only one text and associated link per line, and don't span lines."
+msgstr ""
+"В каждой строчке может быть только одно слово или фраза с указанием только "
+"одного URL-адреса или указателя на другое слово или фразу."
+
+#: linkify-text.php:190
+msgid ""
+"Define text and the URL they should be linked to in the field below. The "
+"format should be like this:"
+msgstr ""
+"Определите привязку текста и URL-адреса в поле ниже. Формат должен выглядеть "
+"следующим образом:"
+
+#: linkify-text.php:189
+msgid "Description: Automatically hyperlink words or phrases in your posts."
+msgstr ""
+"Описание: Автоматическое добавление гиперссылок для слов или фраз в записях."
+
+#: c2c-plugin.php:708
+msgid "Donate"
+msgstr "Пожертвование"
+
+#: c2c-plugin.php:706
+#, php-format
+msgid "Donation for coffee2code plugin: %s"
+msgstr "Пожертвование для плагина coffee2code: %s"
+
+#: linkify-text.php:145
+msgid "Enable text linkification in comments?"
+msgstr "Добавлять ссылки в комментариях?"
+
+#: c2c-plugin.php:410
+#, php-format
+msgid "Expected integer value for: %s"
+msgstr "Ожидается целочисленное значение для: %s"
+
+#. Author URI of the plugin
+msgid "http://coffee2code.com/"
+msgstr ""
+
+#. URI of the plugin
+msgid "http://coffee2code.com/wp-plugins/linkify-text/"
+msgstr ""
+
+#: linkify-text.php:151
+msgid ""
+"If checked, then each term will only be linkified the first time it appears "
+"in a post."
+msgstr ""
+"Если этот флажок установлен, то каждое слово или фраза будет привязана "
+"только в первом найденном случае в каждой записи."
+
+#: linkify-text.php:157
+msgid ""
+"If checked, then linkification of \"WordPress\" would also affect "
+"\"wordpress\"."
+msgstr ""
+"Если этот флажок установлен, то ссылка «WordPress» будет добавляться и к "
+"«wordpress»."
+
+#: linkify-text.php:163
+msgid ""
+"If checked, then links added by this plugin will open in a new window when "
+"clicked."
+msgstr ""
+"Если этот флажок установлен, добавленные этим плагином ссылки при нажатии "
+"будут открываться в новом окне."
+
+#: linkify-text.php:204
+msgid ""
+"If the protocol is not specified for the URL, then 'http://' is assumed."
+msgstr "Если для URL-адреса не указан протокол, будет использован «http://»."
+
+#: c2c-plugin.php:83
+#, php-format
+msgid "Invalid file specified for C2C_Plugin: %s"
+msgstr "Недопустимый файл, указанный для C2C_Plugin: %s"
+
+#: linkify-text.php:150
+msgid "Limit linkifications to once per term per post?"
+msgstr "Ограничить привязку не более одного раза на одну запись?"
+
+#. Name of the plugin
+#: linkify-text.php:123 linkify-text.php:124
+msgid "Linkify Text"
+msgstr ""
+
+#: linkify-text.php:187
+msgid "Linkify Text Settings"
+msgstr "Настройки Linkify Text"
+
+#: c2c-plugin.php:682
+msgid "More Help"
+msgstr "Дополнительная информация"
+
+#: c2c-plugin.php:571
+#, php-format
+msgid "More information about %1$s %2$s"
+msgstr "Дополнительная информация о %1$s %2$s"
+
+#: c2c-plugin.php:569
+msgid "More Plugin Help"
+msgstr "Дополнительная правка по плагину"
+
+#: linkify-text.php:199
+msgid ""
+"NOTE: A referenced term must have a link; it cannot be a reference to "
+"another term. So for the example above, \"dotorg\" cannot specify \":"
+"WordPress\" since \"WordPress\" is itself a reference to another term (\":"
+"WP\")."
+msgstr ""
+"Примечание: в качестве указателя можно использовать только слово с "
+"присвоенным URL-адресом. В данном примере «dotorg» не может указать на «:"
+"WordPress», поскольку «WordPress» является указателем на слово «:WP»."
+
+#: linkify-text.php:162
+msgid "Open links in a new window?"
+msgstr "Открывать ссылки в новом окне?"
+
+#: linkify-text.php:200
+msgid "Other considerations:"
+msgstr "Дополнительная информация:"
+
+#: c2c-plugin.php:992
+msgid "Reset Settings"
+msgstr "Сбросить настройки"
+
+#: c2c-plugin.php:991
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#. Author of the plugin
+msgid "Scott Reilly"
+msgstr ""
+
+#: c2c-plugin.php:327
+msgid "See the \"Help\" link to the top-right of the page for more help."
+msgstr ""
+"Для получения дополнительной информации см. ссылку «Помощь» в правом верхнем "
+"углу страницы."
+
+#: c2c-plugin.php:695
+msgid "Settings"
+msgstr "Настройки"
+
+#: c2c-plugin.php:380
+msgid "Settings reset."
+msgstr "Сброс настроек."
+
+#: c2c-plugin.php:136 c2c-plugin.php:143
+msgid "Something went wrong."
+msgstr "Что-то пошло не так."
+
+#: linkify-text.php:137
+msgid "Text and Links"
+msgstr "Текст и ссылки"
+
+#: linkify-text.php:202
+msgid "Text must represent a whole word or phrase, not a partial string."
+msgstr ""
+"Текст должен представлять собой целое слово или фразу, но не часть слова."
+
+#: c2c-plugin.php:493
+#, php-format
+msgid "The plugin configuration option '%s' must be supplied."
+msgstr "Должна быть предоставлена опция конфигурации плагина '%s'."
+
+#: linkify-text.php:140
+msgid ""
+"Tip: Use a colon-prefixed term instead of a link to point to that term's "
+"link, e.g. <code>WP => :WordPress</code> will use the same link defined for "
+"<code>WordPress</code>"
+msgstr ""
+"Совет: используйте «префикс с двоеточием» вместо URL-адреса, например, <code>"
+"WP =>: WordPress</code> будет использовать тот же URL-адрес, что и <code>"
+"WordPress</code>"
+
+#: linkify-text.php:192
+msgid ""
+"Where <code>WordPress</code> is the text you want to get linked and <code>"
+"https://wordpress.org</code> would be the target for that link."
+msgstr ""
+"В данном примере <code>WordPress</code> это текст (слово или фраза), который "
+"вы хотите сделать ссылкой, а <code>https://wordpress.org</code> будет "
+"адресом ссылки."
+
+#: linkify-text.php:193
+msgid ""
+"You can link multiple terms to the same link and only have to define the "
+"link once. Simply provide the link for a given term, then for subsequent "
+"terms sharing the same link, use the original term prepended with a colon as "
+"the link, e.g."
+msgstr ""
+"Вы можете связать один URL-адрес с несколькими разными словами или фразами "
+"без необходимости каждый раз указывать URL-адрес. Для этого вместо "
+"повторного указания URL-адреса используйте указатель на слово или фразу с "
+"двоеточием, вместо URL-адреса, например:"
